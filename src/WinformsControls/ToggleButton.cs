@@ -36,15 +36,19 @@ public partial class ToggleButton : CheckBox
 		set
 		{
 			Color c = value;
+
 			if (c.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OnSliderColor));
 			}
+
 			if (value == OnSliderColor)
 			{
 				return;
 			}
+
 			_onSliderColor = value;
+
 			OnSlideColorChanged(EventArgs.Empty);
 			Invalidate();
 		}
@@ -64,15 +68,19 @@ public partial class ToggleButton : CheckBox
 		set
 		{
 			Color c = value;
+
 			if (c.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OffSliderColor));
 			}
+
 			if (value == OffSliderColor)
 			{
 				return;
 			}
+
 			_offSliderColor = value;
+
 			OnSlideColorChanged(EventArgs.Empty);
 			Invalidate();
 		}
@@ -92,15 +100,19 @@ public partial class ToggleButton : CheckBox
 		set
 		{
 			Color c = value;
+
 			if (c.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OnToggleColor));
 			}
+
 			if (value == OnToggleColor)
 			{
 				return;
 			}
+
 			_onToggleColor = value;
+
 			OnToggleColorChanged(EventArgs.Empty);
 			Invalidate();
 		}
@@ -120,15 +132,19 @@ public partial class ToggleButton : CheckBox
 		set
 		{
 			Color c = value;
+
 			if (c.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OffToggleColor));
 			}
+
 			if (value == OffToggleColor)
 			{
 				return;
 			}
+
 			_offToggleColor = value;
+
 			OnToggleColorChanged(EventArgs.Empty);
 			Invalidate();
 		}
@@ -148,6 +164,7 @@ public partial class ToggleButton : CheckBox
 			{
 				return;
 			}
+
 			_solidStyle = value;
 			Invalidate();
 		}
