@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
+
 namespace WinformsControls;
+
 public partial class ToggleButton : CheckBox
 {
 	private Color _onSliderColor = Color.RoyalBlue;
