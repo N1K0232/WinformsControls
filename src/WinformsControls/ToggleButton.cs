@@ -166,6 +166,8 @@ public partial class ToggleButton : CheckBox
 			}
 
 			_solidStyle = value;
+
+			OnSolidStyleChanged(EventArgs.Empty);
 			Invalidate();
 		}
 	}
@@ -204,6 +206,7 @@ public partial class ToggleButton : CheckBox
 
 	public event EventHandler SlideColorChanged;
 	public event EventHandler ToggleColorChanged;
+	public event EventHandler SolidStyleChanged;
 
 	/// <summary>
 	/// raises the <see cref="ToggleButton.SlideColorChanged"/> event
@@ -225,6 +228,15 @@ public partial class ToggleButton : CheckBox
 		handler?.Invoke(this, e);
 	}
 
+	/// <summary>
+	/// raises the <see cref="ToggleButton.SolidStyleChanged"/> event
+	/// </summary>
+	/// <param name="e"></param>
+	protected virtual void OnSolidStyleChanged(EventArgs e)
+	{
+		EventHandler handler = SolidStyleChanged;
+		handler?.Invoke(this, e);
+	}
 
 	/// <summary>
 	/// raises the <see cref="ToggleButton.OnPaint(PaintEventArgs)"/> event
