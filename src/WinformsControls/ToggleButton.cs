@@ -268,6 +268,7 @@ public partial class ToggleButton : CheckBox
 		GraphicsPath path = GetFigurePath();
 		Color backColor = GetSlideColor(isChecked);
 		SolidBrush brush = new(backColor);
+
 		if (isChecked)
 		{
 			if (_solidStyle)
@@ -305,6 +306,7 @@ public partial class ToggleButton : CheckBox
 	{
 		Color toggleColor = GetToggleColor(isChecked);
 		SolidBrush brush = new(toggleColor);
+
 		int toggleSize = height - 5;
 		Rectangle rectangle;
 
@@ -328,11 +330,14 @@ public partial class ToggleButton : CheckBox
 	{
 		Rectangle leftArc = LeftArc;
 		Rectangle rightArc = RightArc;
+
 		GraphicsPath path = new();
+
 		path.StartFigure();
 		path.AddArc(leftArc, 90, 180);
 		path.AddArc(rightArc, 270, 180);
 		path.CloseFigure();
+
 		return path;
 	}
 
