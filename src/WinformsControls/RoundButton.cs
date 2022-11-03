@@ -3,11 +3,19 @@ using System.Drawing.Drawing2D;
 
 namespace WinformsControls;
 
+/// <summary>
+/// 
+/// </summary>
+[DefaultEvent(nameof(Click))]
 public partial class RoundButton : Button
 {
 	private int _borderSize = 0;
 	private int _borderRadius = 40;
+
 	private Color _borderColor = Color.PaleVioletRed;
+	private Color _borderFocusColor = Color.Red;
+
+	private bool _focused = false;
 
 	/// <summary>
 	/// creates a new instance of the <see cref="RoundButton"/> control
@@ -15,6 +23,12 @@ public partial class RoundButton : Button
 	public RoundButton()
 	{
 		SetStyle(ControlStyles.UserPaint, true);
+		SetStyle(ControlStyles.ResizeRedraw, true);
+		SetStyle(ControlStyles.Selectable, true);
+
+		SetStyle(ControlStyles.ContainerControl, false);
+		SetStyle(ControlStyles.Opaque, false);
+
 		Initialize();
 	}
 
@@ -23,7 +37,7 @@ public partial class RoundButton : Button
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("button appearance")]
-	public int BorderSize
+	public virtual int BorderSize
 	{
 		get
 		{
@@ -51,7 +65,7 @@ public partial class RoundButton : Button
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("button appearance")]
-	public int BorderRadius
+	public virtual int BorderRadius
 	{
 		get
 		{
@@ -79,7 +93,7 @@ public partial class RoundButton : Button
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("button appearance")]
-	public Color BorderColor
+	public virtual Color BorderColor
 	{
 		get
 		{
@@ -87,21 +101,51 @@ public partial class RoundButton : Button
 		}
 		set
 		{
-			Color c = value;
-
-			if (c.IsEmpty)
+			if (value.IsEmpty)
 			{
 				throw new ArgumentException("Invalid color", nameof(BorderColor));
 			}
 
-			if (c == BorderColor)
+			if (value == BorderColor)
 			{
 				return;
 			}
 
-			_borderColor = c;
+			_borderColor = value;
+			Invalidate();
 		}
 	}
+
+
+	/// <summary>
+	/// gets or sets the color of the border when the control receives focus
+	/// </summary>
+	[EditorBrowsable(EditorBrowsableState.Always)]
+	[Category("button appearance")]
+	public virtual Color BorderFocusColor
+	{
+		get
+		{
+			return _borderFocusColor;
+		}
+		set
+		{
+			if (value.IsEmpty)
+			{
+				throw new ArgumentException("Invalid color", nameof(BorderFocusColor));
+			}
+
+			if (value == BorderFocusColor)
+			{
+				return;
+			}
+
+			_borderFocusColor = value;
+
+			//the Invalidate method is not called because depends on the status of the control
+		}
+	}
+
 
 	/// <summary>
 	/// raises the <see cref="RoundButton.OnPaint(PaintEventArgs)" /> event
@@ -121,13 +165,21 @@ public partial class RoundButton : Button
 		DrawSurface(graphics, width, height);
 	}
 
+	/// <summary>
+	/// draws the border of the control
+	/// </summary>
+	/// <param name="graphics"></param>
+	/// <param name="width"></param>
+	/// <param name="height"></param>
 	private void DrawBorder(Graphics graphics, int width, int height)
 	{
-		Color borderColor = BorderColor;
+		Color borderColor = _focused ? BorderFocusColor : BorderColor;
+
 		int borderSize = BorderSize;
 		int borderRadius = BorderRadius;
 
 		RectangleF borderRectangle = new(1, 1, Width - 0.8F, Height - 1);
+
 		GraphicsPath borderPath = GetFigurePath(borderRectangle, 1F);
 		Pen borderPen = null;
 
@@ -155,12 +207,19 @@ public partial class RoundButton : Button
 		borderPath.Dispose();
 	}
 
+	/// <summary>
+	/// draws the surface of the control
+	/// </summary>
+	/// <param name="graphics"></param>
+	/// <param name="width"></param>
+	/// <param name="height"></param>
 	private void DrawSurface(Graphics graphics, int width, int height)
 	{
 		RectangleF surfaceRectangle = new(0, 0, width, height);
 		int borderRadius = BorderRadius;
 
 		Control parent = Parent;
+
 		GraphicsPath surfacePath = GetFigurePath(surfaceRectangle);
 		Pen penSurface = new(parent.BackColor, 2);
 
@@ -202,6 +261,18 @@ public partial class RoundButton : Button
 		container.BackColorChanged -= new EventHandler(Container_BackColorChanged);
 	}
 
+	protected override void OnMouseEnter(EventArgs e)
+	{
+		Cursor = Cursors.Hand;
+		base.OnMouseEnter(e);
+	}
+
+	protected override void OnMouseLeave(EventArgs e)
+	{
+		Cursor = Cursors.Default;
+		base.OnMouseLeave(e);
+	}
+
 	/// <summary>
 	/// if this control is in DesignMode then redraw the control
 	/// </summary>
@@ -209,7 +280,16 @@ public partial class RoundButton : Button
 	/// <param name="e"></param>
 	private void Container_BackColorChanged(object sender, EventArgs e)
 	{
-		if (DesignMode)
+		InvalidateIfDesignMode();
+	}
+
+	/// <summary>
+	/// redraws the control if <see cref="Component.DesignMode"/> value is true
+	/// </summary>
+	private void InvalidateIfDesignMode()
+	{
+		bool designMode = DesignMode;
+		if (designMode)
 		{
 			Invalidate();
 		}
@@ -228,8 +308,39 @@ public partial class RoundButton : Button
 
 		BackColor = Color.RoyalBlue;
 		ForeColor = Color.White;
+
+		Enter += new EventHandler(EnterArea);
+		Leave += new EventHandler(LeaveArea);
 	}
 
+	/// <summary>
+	/// called when the control is entered
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
+	private void EnterArea(object sender, EventArgs e)
+	{
+		_focused = true;
+		Invalidate();
+	}
+
+	/// <summary>
+	/// called when the input focus leaves the control
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
+	private void LeaveArea(object sender, EventArgs e)
+	{
+		_focused = false;
+		Invalidate();
+	}
+
+	/// <summary>
+	/// gets the path of the control
+	/// </summary>
+	/// <param name="rectangle"></param>
+	/// <param name="offset"></param>
+	/// <returns></returns>
 	private GraphicsPath GetFigurePath(RectangleF rectangle, float offset = 0)
 	{
 		float borderRadius = Convert.ToSingle(BorderRadius);
