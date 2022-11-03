@@ -6,6 +6,8 @@ namespace WinformsControls;
 /// <summary>
 /// defines a <see cref="Button"/> control with a double background color
 /// </summary>
+[DefaultEvent(nameof(Click))]
+[ToolboxItemFilter("WinformsControls")]
 public partial class CuteButton : Button
 {
     private Color _firstColor = Color.Red;
@@ -62,6 +64,7 @@ public partial class CuteButton : Button
 
             _firstColor = value;
 
+            ChangeTextColor();
             OnFirstColorChanged(EventArgs.Empty);
             Invalidate();
         }
@@ -92,6 +95,7 @@ public partial class CuteButton : Button
 
             _secondColor = value;
 
+            ChangeTextColor();
             OnSecondColorChanged(EventArgs.Empty);
             Invalidate();
         }
@@ -241,6 +245,23 @@ public partial class CuteButton : Button
         }
     }
 
+    public override DialogResult DialogResult
+    {
+        get
+        {
+            return base.DialogResult;
+        }
+        set
+        {
+            if (value == DialogResult)
+            {
+                return;
+            }
+
+            base.DialogResult = value;
+        }
+    }
+
     protected override CreateParams CreateParams => base.CreateParams;
 
 
@@ -333,6 +354,27 @@ public partial class CuteButton : Button
     {
         EventHandler handler = SecondColorTransparencyChanged;
         handler?.Invoke(this, e);
+    }
+
+
+    protected override void OnClick(EventArgs e)
+    {
+        base.OnClick(e);
+    }
+
+
+    protected override void OnDoubleClick(EventArgs e)
+    {
+        base.OnDoubleClick(e);
+    }
+
+    /// <summary>
+    /// redraws the background of the control
+    /// </summary>
+    /// <param name="pevent"></param>
+    protected override void OnPaintBackground(PaintEventArgs pevent)
+    {
+        base.OnPaintBackground(pevent);
     }
 
     /// <summary>
@@ -470,5 +512,28 @@ public partial class CuteButton : Button
         {
             Invalidate();
         }
+    }
+
+    /// <summary>
+    /// when the <see cref="FirstColor"/> property or the <see cref="SecondColor"/> property value
+    /// changes this method updates the <see cref="Control.ForeColor"/> property
+    /// </summary>
+    private void ChangeTextColor()
+    {
+        float firstColorBrightness = FirstColor.GetBrightness();
+        float secondColorBrightness = SecondColor.GetBrightness();
+
+        Color textColor;
+
+        if (firstColorBrightness > 0.8F && secondColorBrightness > 0.8F)
+        {
+            textColor = Color.White;
+        }
+        else
+        {
+            textColor = Color.Black;
+        }
+
+        ForeColor = textColor;
     }
 }
