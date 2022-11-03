@@ -22,7 +22,6 @@ public partial class MainForm : Form
             this.toggleButton = new WinformsControls.ToggleButton();
             this.textBlock1 = new WinformsControls.TextBlock();
             this.cuteButton1 = new WinformsControls.CuteButton();
-            this.customDateTimePicker1 = new WinformsControls.CustomDateTimePicker();
             this.SuspendLayout();
             // 
             // firstButton
@@ -99,26 +98,12 @@ public partial class MainForm : Form
             this.cuteButton1.Text = "cuteButton1";
             this.cuteButton1.UseVisualStyleBackColor = true;
             // 
-            // customDateTimePicker1
-            // 
-            this.customDateTimePicker1.BorderColor = System.Drawing.Color.PaleVioletRed;
-            this.customDateTimePicker1.BorderSize = 0;
-            this.customDateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.customDateTimePicker1.Location = new System.Drawing.Point(432, 340);
-            this.customDateTimePicker1.MinimumSize = new System.Drawing.Size(0, 35);
-            this.customDateTimePicker1.Name = "customDateTimePicker1";
-            this.customDateTimePicker1.Size = new System.Drawing.Size(250, 35);
-            this.customDateTimePicker1.SkinColor = System.Drawing.Color.MediumSlateBlue;
-            this.customDateTimePicker1.TabIndex = 4;
-            this.customDateTimePicker1.TextColor = System.Drawing.Color.White;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.customDateTimePicker1);
             this.Controls.Add(this.cuteButton1);
             this.Controls.Add(this.textBlock1);
             this.Controls.Add(this.firstButton);
@@ -134,5 +119,4 @@ public partial class MainForm : Form
     private ToggleButton toggleButton;
     private TextBlock textBlock1;
     private CuteButton cuteButton1;
-    private CustomDateTimePicker customDateTimePicker1;
 }
