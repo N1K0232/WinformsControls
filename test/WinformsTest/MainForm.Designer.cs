@@ -18,48 +18,80 @@ public partial class MainForm : Form
 
     private void InitializeComponent()
     {
-        firstButton = new RoundButton();
-        toggleButton = new ToggleButton();
-        SuspendLayout();
+            this.firstButton = new WinformsControls.RoundButton();
+            this.toggleButton = new WinformsControls.ToggleButton();
+            this.textBlock1 = new WinformsControls.TextBlock();
+            this.SuspendLayout();
+            // 
+            // firstButton
+            // 
+            this.firstButton.BackColor = System.Drawing.Color.RoyalBlue;
+            this.firstButton.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.firstButton.BorderRadius = 40;
+            this.firstButton.BorderSize = 2;
+            this.firstButton.FlatAppearance.BorderSize = 0;
+            this.firstButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.firstButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.firstButton.ForeColor = System.Drawing.Color.White;
+            this.firstButton.Location = new System.Drawing.Point(310, 196);
+            this.firstButton.Name = "firstButton";
+            this.firstButton.Size = new System.Drawing.Size(188, 74);
+            this.firstButton.TabIndex = 0;
+            this.firstButton.Text = "First button";
+            this.firstButton.UseVisualStyleBackColor = false;
+            // 
+            // toggleButton
+            // 
+            this.toggleButton.Location = new System.Drawing.Point(200, 200);
+            this.toggleButton.MinimumSize = new System.Drawing.Size(90, 45);
+            this.toggleButton.Name = "toggleButton";
+            this.toggleButton.OffSliderColor = System.Drawing.Color.Gray;
+            this.toggleButton.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.toggleButton.OnSliderColor = System.Drawing.Color.RoyalBlue;
+            this.toggleButton.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.toggleButton.Size = new System.Drawing.Size(90, 45);
+            this.toggleButton.SolidStyle = true;
+            this.toggleButton.TabIndex = 1;
+            this.toggleButton.UseVisualStyleBackColor = false;
+            // 
+            // textBlock1
+            // 
+            this.textBlock1.BackColor = System.Drawing.Color.White;
+            this.textBlock1.BorderColor = System.Drawing.Color.RoyalBlue;
+            this.textBlock1.BorderFocusColor = System.Drawing.Color.HotPink;
+            this.textBlock1.BorderSize = 2;
+            this.textBlock1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBlock1.ForeColor = System.Drawing.Color.Gray;
+            this.textBlock1.Location = new System.Drawing.Point(283, 52);
+            this.textBlock1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBlock1.Multiline = false;
+            this.textBlock1.Name = "textBlock1";
+            this.textBlock1.Padding = new System.Windows.Forms.Padding(7);
+            this.textBlock1.PasswordChar = '\0';
+            this.textBlock1.PlaceholderColor = System.Drawing.Color.Gray;
+            this.textBlock1.PlaceholderText = "";
+            this.textBlock1.Size = new System.Drawing.Size(312, 36);
+            this.textBlock1.TabIndex = 2;
+            this.textBlock1.UnderlinedStyle = false;
+            this.textBlock1.UseSystemPasswordChar = false;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBlock1);
+            this.Controls.Add(this.firstButton);
+            this.Controls.Add(this.toggleButton);
+            this.ForeColor = System.Drawing.Color.Black;
+            this.Name = "MainForm";
+            this.Text = "Control test";
+            this.ResumeLayout(false);
 
-        firstButton.BackColor = Color.RoyalBlue;
-        firstButton.BorderColor = Color.PaleVioletRed;
-        firstButton.BorderRadius = 40;
-        firstButton.BorderSize = 2;
-        firstButton.FlatAppearance.BorderSize = 0;
-        firstButton.FlatStyle = FlatStyle.Flat;
-        firstButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-        firstButton.ForeColor = Color.White;
-        firstButton.Location = new Point(310, 196);
-        firstButton.Name = "firstButton";
-        firstButton.Size = new Size(188, 74);
-        firstButton.TabIndex = 0;
-        firstButton.Text = "First button";
-        firstButton.UseVisualStyleBackColor = false;
-
-        toggleButton.Location = new Point(200, 200);
-        toggleButton.UseVisualStyleBackColor = false;
-        toggleButton.TabIndex = 1;
-        toggleButton.MinimumSize = new Size(90, 45);
-        toggleButton.Size = new Size(90, 45);
-        toggleButton.OnSliderColor = Color.RoyalBlue;
-        toggleButton.OffSliderColor = Color.Gray;
-        toggleButton.OnToggleColor = Color.WhiteSmoke;
-        toggleButton.OffToggleColor = Color.Gainsboro;
-        toggleButton.Name = "toggleButton";
-
-        AutoScaleDimensions = new SizeF(8F, 20F);
-        AutoScaleMode = AutoScaleMode.Font;
-        BackColor = Color.White;
-        ClientSize = new Size(800, 450);
-        Controls.Add(firstButton);
-        Controls.Add(toggleButton);
-        ForeColor = Color.Black;
-        Name = "MainForm";
-        Text = "Control test";
-        ResumeLayout(false);
     }
 
     private RoundButton firstButton;
     private ToggleButton toggleButton;
+    private TextBlock textBlock1;
 }
