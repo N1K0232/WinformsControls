@@ -21,12 +21,15 @@ public partial class MainForm : Form
             this.firstButton = new WinformsControls.RoundButton();
             this.toggleButton = new WinformsControls.ToggleButton();
             this.textBlock1 = new WinformsControls.TextBlock();
+            this.cuteButton1 = new WinformsControls.CuteButton();
+            this.cuteButton2 = new WinformsControls.CuteButton();
             this.SuspendLayout();
             // 
             // firstButton
             // 
             this.firstButton.BackColor = System.Drawing.Color.RoyalBlue;
             this.firstButton.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.firstButton.BorderFocusColor = System.Drawing.Color.Red;
             this.firstButton.BorderRadius = 40;
             this.firstButton.BorderSize = 2;
             this.firstButton.FlatAppearance.BorderSize = 0;
@@ -75,12 +78,56 @@ public partial class MainForm : Form
             this.textBlock1.UnderlinedStyle = false;
             this.textBlock1.UseSystemPasswordChar = false;
             // 
+            // cuteButton1
+            // 
+            this.cuteButton1.Angle = 10F;
+            this.cuteButton1.BorderColor = System.Drawing.Color.Magenta;
+            this.cuteButton1.BorderFocusColor = System.Drawing.Color.DarkMagenta;
+            this.cuteButton1.FirstColor = System.Drawing.Color.Red;
+            this.cuteButton1.FirstColorTransparency = 80;
+            this.cuteButton1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.cuteButton1.FlatAppearance.BorderSize = 0;
+            this.cuteButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cuteButton1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cuteButton1.ForeColor = System.Drawing.Color.Black;
+            this.cuteButton1.Location = new System.Drawing.Point(590, 166);
+            this.cuteButton1.Name = "cuteButton1";
+            this.cuteButton1.SecondColor = System.Drawing.Color.RoyalBlue;
+            this.cuteButton1.SecondColorTransparency = 80;
+            this.cuteButton1.Size = new System.Drawing.Size(150, 62);
+            this.cuteButton1.TabIndex = 3;
+            this.cuteButton1.Text = "cuteButton1";
+            this.cuteButton1.UseVisualStyleBackColor = true;
+            // 
+            // cuteButton2
+            // 
+            this.cuteButton2.Angle = 10F;
+            this.cuteButton2.BorderColor = System.Drawing.Color.Magenta;
+            this.cuteButton2.BorderFocusColor = System.Drawing.Color.DarkMagenta;
+            this.cuteButton2.FirstColor = System.Drawing.Color.Red;
+            this.cuteButton2.FirstColorTransparency = 80;
+            this.cuteButton2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.cuteButton2.FlatAppearance.BorderSize = 0;
+            this.cuteButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cuteButton2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cuteButton2.ForeColor = System.Drawing.Color.Black;
+            this.cuteButton2.Location = new System.Drawing.Point(599, 323);
+            this.cuteButton2.Name = "cuteButton2";
+            this.cuteButton2.SecondColor = System.Drawing.Color.RoyalBlue;
+            this.cuteButton2.SecondColorTransparency = 80;
+            this.cuteButton2.Size = new System.Drawing.Size(8, 8);
+            this.cuteButton2.TabIndex = 4;
+            this.cuteButton2.Text = "cuteButton2";
+            this.cuteButton2.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cuteButton2);
+            this.Controls.Add(this.cuteButton1);
             this.Controls.Add(this.textBlock1);
             this.Controls.Add(this.firstButton);
             this.Controls.Add(this.toggleButton);
@@ -94,4 +141,6 @@ public partial class MainForm : Form
     private RoundButton firstButton;
     private ToggleButton toggleButton;
     private TextBlock textBlock1;
+    private CuteButton cuteButton1;
+    private CuteButton cuteButton2;
 }

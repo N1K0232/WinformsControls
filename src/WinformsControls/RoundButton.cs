@@ -301,7 +301,7 @@ public partial class RoundButton : Button
 	private void Initialize()
 	{
 		Size = new Size(150, 40);
-		Font = new Font("Segoe UI", 12F);
+		Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
 
 		FlatStyle = FlatStyle.Flat;
 		FlatAppearance.BorderSize = 0;
