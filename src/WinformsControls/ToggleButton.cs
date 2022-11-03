@@ -20,6 +20,11 @@ public partial class ToggleButton : CheckBox
 	public ToggleButton()
 	{
 		SetStyle(ControlStyles.UserPaint, true);
+		SetStyle(ControlStyles.ResizeRedraw, true);
+
+		SetStyle(ControlStyles.ContainerControl, false);
+		SetStyle(ControlStyles.Opaque, false);
+
 		MinimumSize = new Size(90, 45);
 	}
 
@@ -37,9 +42,7 @@ public partial class ToggleButton : CheckBox
 		}
 		set
 		{
-			Color c = value;
-
-			if (c.IsEmpty)
+			if (value.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OnSliderColor));
 			}
@@ -69,9 +72,7 @@ public partial class ToggleButton : CheckBox
 		}
 		set
 		{
-			Color c = value;
-
-			if (c.IsEmpty)
+			if (value.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OffSliderColor));
 			}
@@ -101,9 +102,7 @@ public partial class ToggleButton : CheckBox
 		}
 		set
 		{
-			Color c = value;
-
-			if (c.IsEmpty)
+			if (value.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OnToggleColor));
 			}
@@ -133,9 +132,7 @@ public partial class ToggleButton : CheckBox
 		}
 		set
 		{
-			Color c = value;
-
-			if (c.IsEmpty)
+			if (value.IsEmpty)
 			{
 				throw new ArgumentException("invalid color", nameof(OffToggleColor));
 			}
@@ -159,7 +156,7 @@ public partial class ToggleButton : CheckBox
 	[Category("toggle appearance")]
 	public bool SolidStyle
 	{
-		get => _solidStyle;
+		get { return _solidStyle; }
 		set
 		{
 			if (value == SolidStyle)
