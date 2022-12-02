@@ -102,7 +102,7 @@ internal sealed partial class Resources
     /// this method is accessible only for this library
     /// </summary>
     /// <param name="resourceName">the name of the resource</param>
-    /// <returns>the resource object found otherwise <see langword="null"/>/></returns>
+    /// <returns>the resource object found otherwise <see langword="null"/></returns>
     internal static object GetResource(string resourceName)
     {
         bool found = TryGetResource(resourceName, out object resource);
