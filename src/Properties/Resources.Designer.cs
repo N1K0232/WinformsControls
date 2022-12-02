@@ -17,7 +17,7 @@ namespace WinformsControls.Properties;
 [GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
 [DebuggerNonUserCodeAttribute()]
 [CompilerGeneratedAttribute()]
-internal sealed class Resources
+internal sealed partial class Resources
 {
     private static ResourceManager _resourceManager;
     private static CultureInfo _resourceCulture;
@@ -66,9 +66,9 @@ internal sealed class Resources
         get
         {
             string resourceName = nameof(CalendarDark);
-            object obj = GetResourceCore(resourceName);
+            bool resourceFound = TryGetResource(resourceName, out object resource);
             
-            if(obj != null && obj is Bitmap calendarDark)
+            if(resourceFound && resource is Bitmap calendarDark)
             {
                 return calendarDark;
             }
@@ -85,9 +85,9 @@ internal sealed class Resources
         get
         {
             string resourceName = nameof(CalendarWhite);
-            object obj = GetResourceCore(resourceName);
+            bool resourceFound = TryGetResource(resourceName, out object resource);
 
-            if(obj != null && obj is Bitmap calendarWhite)
+            if(resourceFound && resource is Bitmap calendarWhite)
             {
                 return calendarWhite;
             }
@@ -104,7 +104,13 @@ internal sealed class Resources
     /// <returns>the resource object in the Resources folder</returns>
     internal static object GetResource(string resourceName)
     {
-        return GetResourceCore(resourceName);
+        bool resourceFound = TryGetResource(resourceName, out object resource);
+        if(resourceFound)
+        {
+            return resource;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -112,14 +118,17 @@ internal sealed class Resources
     /// </summary>
     /// <param name="resourceName">the name of the resource</param>
     /// <returns>the resource object in the Resources folder</returns>
-    private static object GetResourceCore(string resourceName)
+    private static bool TryGetResource(string resourceName, out object resource)
     {
         if(string.IsNullOrWhiteSpace(resourceName))
         {
-            return null;
+            resource = null;
+            return false;
         }
 
         CultureInfo culture = Culture;
-        return ResourceManager.GetObject(resourceName, culture);
+        
+        resource = ResourceManager.GetObject(resourceName, culture);
+        return resource != null;
     }
 }
