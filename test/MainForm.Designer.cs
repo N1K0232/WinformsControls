@@ -21,6 +21,7 @@ public partial class MainForm : Form
             this.firstButton = new WinformsControls.RoundButton();
             this.toggleButton = new WinformsControls.ToggleButton();
             this.cuteButton1 = new WinformsControls.CuteButton();
+            this.clock1 = new WinformsControls.Clock();
             this.SuspendLayout();
             // 
             // firstButton
@@ -76,12 +77,22 @@ public partial class MainForm : Form
             this.cuteButton1.Text = "cuteButton1";
             this.cuteButton1.UseVisualStyleBackColor = true;
             // 
+            // clock1
+            // 
+            this.clock1.BackColor = System.Drawing.Color.White;
+            this.clock1.ForeColor = System.Drawing.Color.Black;
+            this.clock1.Location = new System.Drawing.Point(340, 316);
+            this.clock1.Name = "clock1";
+            this.clock1.Size = new System.Drawing.Size(250, 250);
+            this.clock1.TabIndex = 4;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(993, 620);
+            this.Controls.Add(this.clock1);
             this.Controls.Add(this.cuteButton1);
             this.Controls.Add(this.firstButton);
             this.Controls.Add(this.toggleButton);
@@ -95,4 +106,5 @@ public partial class MainForm : Form
     private RoundButton firstButton;
     private ToggleButton toggleButton;
     private CuteButton cuteButton1;
+    private Clock clock1;
 }
