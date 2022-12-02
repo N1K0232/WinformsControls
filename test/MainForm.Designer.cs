@@ -20,7 +20,6 @@ public partial class MainForm : Form
     {
             this.firstButton = new WinformsControls.RoundButton();
             this.toggleButton = new WinformsControls.ToggleButton();
-            this.textBlock1 = new WinformsControls.TextBlock();
             this.cuteButton1 = new WinformsControls.CuteButton();
             this.SuspendLayout();
             // 
@@ -56,27 +55,6 @@ public partial class MainForm : Form
             this.toggleButton.TabIndex = 1;
             this.toggleButton.UseVisualStyleBackColor = false;
             // 
-            // textBlock1
-            // 
-            this.textBlock1.BackColor = System.Drawing.Color.White;
-            this.textBlock1.BorderColor = System.Drawing.Color.RoyalBlue;
-            this.textBlock1.BorderFocusColor = System.Drawing.Color.HotPink;
-            this.textBlock1.BorderSize = 2;
-            this.textBlock1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBlock1.ForeColor = System.Drawing.Color.Gray;
-            this.textBlock1.Location = new System.Drawing.Point(283, 52);
-            this.textBlock1.Margin = new System.Windows.Forms.Padding(4);
-            this.textBlock1.Multiline = false;
-            this.textBlock1.Name = "textBlock1";
-            this.textBlock1.Padding = new System.Windows.Forms.Padding(7);
-            this.textBlock1.PasswordChar = '\0';
-            this.textBlock1.PlaceholderColor = System.Drawing.Color.Gray;
-            this.textBlock1.PlaceholderText = "";
-            this.textBlock1.Size = new System.Drawing.Size(312, 36);
-            this.textBlock1.TabIndex = 2;
-            this.textBlock1.UnderlinedStyle = false;
-            this.textBlock1.UseSystemPasswordChar = false;
-            // 
             // cuteButton1
             // 
             this.cuteButton1.Angle = 10F;
@@ -105,7 +83,6 @@ public partial class MainForm : Form
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.cuteButton1);
-            this.Controls.Add(this.textBlock1);
             this.Controls.Add(this.firstButton);
             this.Controls.Add(this.toggleButton);
             this.ForeColor = System.Drawing.Color.Black;
@@ -117,6 +94,5 @@ public partial class MainForm : Form
 
     private RoundButton firstButton;
     private ToggleButton toggleButton;
-    private TextBlock textBlock1;
     private CuteButton cuteButton1;
 }
