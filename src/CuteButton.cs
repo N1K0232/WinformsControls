@@ -10,6 +10,16 @@ namespace WinformsControls;
 [ToolboxItemFilter("WinformsControls")]
 public partial class CuteButton : Button
 {
+    private static readonly object s_firstColorChanged = new();
+    private static readonly object s_secondColorChanged = new();
+    private static readonly object s_borderColorChanged = new();
+    private static readonly object s_borderFocusColorChanged = new();
+    private static readonly object s_firstColorTransparencyChanged = new();
+    private static readonly object s_secondColorTransparencyChanged = new();
+    private static readonly object s_borderSizeChanged = new();
+    private static readonly object s_angleChanged = new();
+
+
     private Color _firstColor = Color.Red;
     private Color _secondColor = Color.RoyalBlue;
 
@@ -18,6 +28,8 @@ public partial class CuteButton : Button
 
     private int _firstColorTransparency = 80;
     private int _secondColorTransparency = 80;
+
+    private int _borderSize = 0;
 
     private float _angle = 10F;
 
@@ -43,6 +55,7 @@ public partial class CuteButton : Button
     /// gets or sets the first color of the control
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Always)]
     public virtual Color FirstColor
     {
@@ -64,9 +77,9 @@ public partial class CuteButton : Button
 
             _firstColor = value;
 
+            Invalidate();
             ChangeTextColor();
             OnFirstColorChanged(EventArgs.Empty);
-            Invalidate();
         }
     }
 
@@ -74,6 +87,7 @@ public partial class CuteButton : Button
     /// gets or sets the second color of the control
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Always)]
     public virtual Color SecondColor
     {
@@ -95,9 +109,9 @@ public partial class CuteButton : Button
 
             _secondColor = value;
 
+            Invalidate();
             ChangeTextColor();
             OnSecondColorChanged(EventArgs.Empty);
-            Invalidate();
         }
     }
 
@@ -105,6 +119,8 @@ public partial class CuteButton : Button
     /// gets or sets the color of the border
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
     public virtual Color BorderColor
     {
         get
@@ -125,8 +141,8 @@ public partial class CuteButton : Button
 
             _borderColor = value;
 
-            OnBorderColorChanged(EventArgs.Empty);
             Invalidate();
+            OnBorderColorChanged(EventArgs.Empty);
         }
     }
 
@@ -134,6 +150,8 @@ public partial class CuteButton : Button
     /// gets or sets the color of the border when the control is focused
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
     public virtual Color BorderFocusColor
     {
         get
@@ -161,6 +179,7 @@ public partial class CuteButton : Button
     /// gets or sets the transparency of the first color
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Always)]
     public virtual int FirstColorTransparency
     {
@@ -182,8 +201,8 @@ public partial class CuteButton : Button
 
             _firstColorTransparency = value;
 
-            OnFirstColorTransparencyChanged(EventArgs.Empty);
             Invalidate();
+            OnFirstColorTransparencyChanged(EventArgs.Empty);
         }
     }
 
@@ -191,6 +210,7 @@ public partial class CuteButton : Button
     /// gets or sets the transparency of the second color
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Always)]
     public virtual int SecondColorTransparency
     {
@@ -212,8 +232,8 @@ public partial class CuteButton : Button
 
             _secondColorTransparency = value;
 
-            OnSecondColorTransparencyChanged(EventArgs.Empty);
             Invalidate();
+            OnSecondColorTransparencyChanged(EventArgs.Empty);
         }
     }
 
@@ -221,6 +241,38 @@ public partial class CuteButton : Button
     /// gets or sets the angle of the control
     /// </summary>
     [Category("button appearance")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    public virtual int BorderSize
+    {
+        get
+        {
+            return _borderSize;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Invalid value", nameof(BorderSize));
+            }
+
+            if (value == BorderSize)
+            {
+                return;
+            }
+
+            _borderSize = value;
+
+            Invalidate();
+            OnBorderSizeChanged(EventArgs.Empty);
+        }
+    }
+
+    /// <summary>
+    /// gets or sets the angle of the control
+    /// </summary>
+    [Category("button appearance")]
+    [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Always)]
     public float Angle
     {
@@ -241,10 +293,15 @@ public partial class CuteButton : Button
             }
 
             _angle = value;
+
             Invalidate();
+            OnAngleChanged(EventArgs.Empty);
         }
     }
 
+    /// <summary>
+    /// gets or sets the dialog result for this control
+    /// </summary>
     public override DialogResult DialogResult
     {
         get
@@ -268,91 +325,185 @@ public partial class CuteButton : Button
     /// <summary>
     /// occurs when the <see cref="FirstColor"/> property value changes
     /// </summary>
-    public event EventHandler FirstColorChanged;
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler FirstColorChanged
+    {
+        add => Events.AddHandler(s_firstColorChanged, value);
+        remove => Events.RemoveHandler(s_firstColorChanged, value);
+    }
 
     /// <summary>
     /// occurs when the <see cref="SecondColor"/> property value changes
     /// </summary>
-    public event EventHandler SecondColorChanged;
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler SecondColorChanged
+    {
+        add => Events.AddHandler(s_secondColorChanged, value);
+        remove => Events.RemoveHandler(s_secondColorChanged, value);
+    }
 
     /// <summary>
     /// occurs when the <see cref="BorderColor"/> property value changes
     /// </summary>
-    public event EventHandler BorderColorChanged;
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler BorderColorChanged
+    {
+        add => Events.AddHandler(s_borderColorChanged, value);
+        remove => Events.RemoveHandler(s_borderColorChanged, value);
+    }
 
     /// <summary>
     /// occurs when the <see cref="BorderFocusColor"/> property value changes
     /// </summary>
-    public event EventHandler BorderFocusColorChanged;
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler BorderFocusColorChanged
+    {
+        add => Events.AddHandler(s_borderFocusColorChanged, value);
+        remove => Events.RemoveHandler(s_borderFocusColorChanged, value);
+    }
 
     /// <summary>
     /// occurs when the <see cref="FirstColorTransparency"/> property value changes
     /// </summary>
-    public event EventHandler FirstColorTransparencyChanged;
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler FirstColorTransparencyChanged
+    {
+        add => Events.AddHandler(s_firstColorTransparencyChanged, value);
+        remove => Events.RemoveHandler(s_firstColorTransparencyChanged, value);
+    }
 
     /// <summary>
     /// occurs when the <see cref="SecondColorTransparency"/> property value changes
     /// </summary>
-    public event EventHandler SecondColorTransparencyChanged;
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler SecondColorTransparencyChanged
+    {
+        add => Events.AddHandler(s_secondColorTransparencyChanged, value);
+        remove => Events.RemoveHandler(s_secondColorTransparencyChanged, value);
+    }
+
+    /// <summary>
+    /// occurs when the <see cref="BorderSize"/> property value changes
+    /// </summary>
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler BorderSizeChanged
+    {
+        add => Events.AddHandler(s_borderSizeChanged, value);
+        remove => Events.RemoveHandler(s_borderSizeChanged, value);
+    }
+
+    /// <summary>
+    /// occurs when the <see cref="Angle"/> property value changes
+    /// </summary>
+    [Category("button events")]
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public event EventHandler AngleChanged
+    {
+        add => Events.AddHandler(s_angleChanged, value);
+        remove => Events.RemoveHandler(s_angleChanged, value);
+    }
 
 
     /// <summary>
     /// raises the <see cref="FirstColorChanged"/> event
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnFirstColorChanged(EventArgs e)
     {
-        EventHandler handler = FirstColorChanged;
+        EventHandler handler = (EventHandler)Events[s_firstColorChanged];
         handler?.Invoke(this, e);
     }
 
     /// <summary>
     /// raises the <see cref="SecondColorChanged"/> event
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnSecondColorChanged(EventArgs e)
     {
-        EventHandler handler = SecondColorChanged;
+        EventHandler handler = (EventHandler)Events[s_secondColorChanged];
         handler?.Invoke(this, e);
     }
 
     /// <summary>
     /// raises the <see cref="BorderColorChanged"/> event
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnBorderColorChanged(EventArgs e)
     {
-        EventHandler handler = BorderColorChanged;
+        EventHandler handler = (EventHandler)Events[s_borderColorChanged];
         handler?.Invoke(this, e);
     }
 
     /// <summary>
-    /// Raises the <see cref="BorderFocusColorChanged"/> event
+    /// raises the <see cref="BorderFocusColorChanged"/> event
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnBorderFocusColorChanged(EventArgs e)
     {
-        EventHandler handler = BorderFocusColorChanged;
+        EventHandler handler = (EventHandler)Events[s_borderFocusColorChanged];
         handler?.Invoke(this, e);
     }
 
     /// <summary>
     /// raises the <see cref="FirstColorTransparencyChanged"/> event
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnFirstColorTransparencyChanged(EventArgs e)
     {
-        EventHandler handler = FirstColorTransparencyChanged;
+        EventHandler handler = (EventHandler)Events[s_firstColorTransparencyChanged];
         handler?.Invoke(this, e);
     }
 
     /// <summary>
     /// raises the <see cref="SecondColorTransparencyChanged"/> event
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnSecondColorTransparencyChanged(EventArgs e)
     {
-        EventHandler handler = SecondColorTransparencyChanged;
+        EventHandler handler = (EventHandler)Events[s_secondColorTransparencyChanged];
+        handler?.Invoke(this, e);
+    }
+
+    /// <summary>
+    /// raises the <see cref="BorderSizeChanged"/> event
+    /// </summary>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnBorderSizeChanged(EventArgs e)
+    {
+        EventHandler handler = (EventHandler)Events[s_borderSizeChanged];
+        handler?.Invoke(this, e);
+    }
+
+    /// <summary>
+    /// raises the <see cref="AngleChanged"/> event
+    /// </summary>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected virtual void OnAngleChanged(EventArgs e)
+    {
+        EventHandler handler = (EventHandler)Events[s_angleChanged];
         handler?.Invoke(this, e);
     }
 
