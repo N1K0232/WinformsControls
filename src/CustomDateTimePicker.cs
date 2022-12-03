@@ -1,9 +1,10 @@
-﻿using WinformsControls.Properties;
+﻿using System.ComponentModel;
+using WinformsControls.Properties;
 
 namespace WinformsControls;
 
 /// <summary>
-/// 
+/// represents a custom <see cref="DateTimePicker"/> control
 /// </summary>
 public partial class CustomDateTimePicker : DateTimePicker
 {
@@ -42,6 +43,12 @@ public partial class CustomDateTimePicker : DateTimePicker
     }
 
 
+    /// <summary>
+    /// gets or sets the fill color
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    [Category("control appearance")]
     public virtual Color SkinColor
     {
         get
@@ -68,6 +75,13 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
     }
 
+
+    /// <summary>
+    /// gets or sets the color of the text
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    [Category("control appearance")]
     public virtual Color TextColor
     {
         get
@@ -93,6 +107,13 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
     }
 
+
+    /// <summary>
+    /// gets or sets the border color
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    [Category("control appearance")]
     public virtual Color BorderColor
     {
         get
@@ -118,6 +139,13 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
     }
 
+
+    /// <summary>
+    /// gets or sets the size of the border
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    [Category("control appearance")]
     public virtual int BorderSize
     {
         get
@@ -143,6 +171,12 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
     }
 
+
+    /// <summary>
+    /// gets or sets the icon for this control appearance
+    /// </summary>
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private Image CalendarIcon
     {
         get
@@ -160,6 +194,12 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
     }
 
+
+    /// <summary>
+    /// gets or sets the area of the icon
+    /// </summary>
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private RectangleF IconButtonArea
     {
         get
@@ -177,6 +217,11 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
     }
 
+    /// <summary>
+    /// gets the width of the icon button
+    /// </summary>
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private int IconButtonWidth
     {
         get
@@ -199,24 +244,48 @@ public partial class CustomDateTimePicker : DateTimePicker
     }
 
 
+    /// <summary>
+    /// occurs when the <see cref="SkinColor"/> changes its value
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Category("control events")]
     public event EventHandler SkinColorChanged
     {
         add => Events.AddHandler(s_skinColorChanged, value);
         remove => Events.RemoveHandler(s_skinColorChanged, value);
     }
 
+    /// <summary>
+    /// occurs when the <see cref="TextColor"/> changes its value
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Category("control events")]
     public event EventHandler TextColorChanged
     {
         add => Events.AddHandler(s_textColorChanged, value);
         remove => Events.RemoveHandler(s_textColorChanged, value);
     }
 
+    /// <summary>
+    /// occurs when the <see cref="BorderColor"/> changes its value
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Category("control events")]
     public event EventHandler BorderColorChanged
     {
         add => Events.AddHandler(s_borderColorChanged, value);
         remove => Events.RemoveHandler(s_borderColorChanged, value);
     }
 
+    /// <summary>
+    /// occurs when the <see cref="BorderSize"/> changes its value
+    /// </summary>
+    [Browsable(true)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Category("control events")]
     public event EventHandler BorderSizeChanged
     {
         add => Events.AddHandler(s_borderSizeChanged, value);
@@ -224,24 +293,44 @@ public partial class CustomDateTimePicker : DateTimePicker
     }
 
 
+    /// <summary>
+    /// raises the <see cref="SkinColorChanged"/> event
+    /// </summary>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnSkinColorChanged(EventArgs e)
     {
         EventHandler handler = (EventHandler)Events[s_skinColorChanged];
         handler?.Invoke(this, e);
     }
 
+    /// <summary>
+    /// raises the <see cref="TextColorChanged"/> event
+    /// </summary>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnTextColorChanged(EventArgs e)
     {
         EventHandler handler = (EventHandler)Events[s_textColorChanged];
         handler?.Invoke(this, e);
     }
 
+    /// <summary>
+    /// raises the <see cref="BorderColorChanged"/> event
+    /// </summary>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnBorderColorChanged(EventArgs e)
     {
         EventHandler handler = (EventHandler)Events[s_borderColorChanged];
         handler?.Invoke(this, e);
     }
 
+    /// <summary>
+    /// raises the <see cref="BorderSizeChanged"/> event
+    /// </summary>
+    /// <param name="e">the event data</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnBorderSizeChanged(EventArgs e)
     {
         EventHandler handler = (EventHandler)Events[s_borderSizeChanged];
@@ -285,6 +374,7 @@ public partial class CustomDateTimePicker : DateTimePicker
         ChangeCursor(mouseLocation);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected override AccessibleObject CreateAccessibilityInstance()
     {
         return new CustomDateTimePickerAccessibleObject(this);
@@ -295,49 +385,67 @@ public partial class CustomDateTimePicker : DateTimePicker
         Graphics graphics = CreateGraphics();
         float width = Width - 0.5F;
         float height = Height - 0.5F;
-        RectangleF clientArea = new(0, 0, width, height);
+        var clientArea = new RectangleF(0, 0, width, height);
 
-        Color borderColor = BorderColor;
+        DrawBorder(graphics, clientArea);
+        DrawRectangle(graphics, clientArea);
+        DrawText(graphics, clientArea);
+        DrawImage(graphics);
+    }
+
+    /// <summary>
+    /// draws the control border
+    /// </summary>
+    /// <param name="graphics">the control graphics</param>
+    /// <param name="clientArea">the control client area</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    private void DrawBorder(Graphics graphics, RectangleF clientArea)
+    {
         int borderSize = BorderSize;
-        Pen borderPen = new(borderColor, borderSize);
+        Color borderColor = BorderColor;
+        using var borderPen = new Pen(borderColor, borderSize);
 
         if (borderSize >= 1)
         {
-            graphics.DrawRectangle(borderPen, 0, 0, width, height);
+            graphics.DrawRectangle(borderPen, clientArea.X, clientArea.Y, clientArea.Width, clientArea.Height);
         }
+    }
+
+    /// <summary>
+    /// fills the rectangle of the control
+    /// </summary>
+    /// <param name="graphics">the control graphics</param>
+    /// <param name="clientArea">the control client area</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    private void DrawRectangle(Graphics graphics, RectangleF clientArea)
+    {
+        bool droppedDown = _droppedDown;
 
         float iconWidth = CalendarIconWidth;
+        var iconArea = new RectangleF(clientArea.Width - iconWidth, 0, iconWidth, clientArea.Height);
+
         Color skinColor = SkinColor;
         Color iconColor = Color.FromArgb(50, 64, 64, 64);
-        RectangleF iconArea = new(width - iconWidth, 0, iconWidth, height);
 
         Brush skinBrush = new SolidBrush(skinColor);
         Brush openIconBrush = new SolidBrush(iconColor);
 
         graphics.FillRectangle(skinBrush, clientArea);
 
-        if (_droppedDown)
+        if (droppedDown)
         {
             graphics.FillRectangle(openIconBrush, iconArea);
         }
 
-        DrawImage(graphics);
-
-        string text = "   " + Text;
-        Font font = Font;
-        Color textColor = TextColor;
-
-        Brush textBrush = new SolidBrush(textColor);
-        StringFormat format = new();
-        format.LineAlignment = StringAlignment.Center;
-        format.Alignment = StringAlignment.Center;
-        graphics.DrawString(text, font, textBrush, clientArea, format);
+        skinBrush.Dispose();
+        openIconBrush.Dispose();
     }
 
     /// <summary>
-    /// 
+    /// draws the calendar icon in the control
     /// </summary>
     /// <param name="graphics"></param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void DrawImage(Graphics graphics)
     {
         Image calendarIcon = CalendarIcon;
@@ -355,9 +463,36 @@ public partial class CustomDateTimePicker : DateTimePicker
     }
 
     /// <summary>
-    /// 
+    /// draws the text
     /// </summary>
-    /// <param name="skinColor"></param>
+    /// <param name="graphics">the control graphics</param>
+    /// <param name="clientArea">the control client area</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    private void DrawText(Graphics graphics, RectangleF clientArea)
+    {
+        string text = "   " + Text;
+        Font font = Font;
+        Color textColor = TextColor;
+
+        StringFormat textFormat = new();
+        Brush textBrush = new SolidBrush(textColor);
+
+        textFormat.LineAlignment = StringAlignment.Center;
+        textFormat.Alignment = StringAlignment.Center;
+        graphics.DrawString(text, font, textBrush, clientArea, textFormat);
+
+        textBrush.Dispose();
+        textFormat.Dispose();
+    }
+
+    /// <summary>
+    /// when the <see cref="SkinColor"/> changes value
+    /// this method updates the icon between
+    /// <see cref="Resources.CalendarDark"/> and <see cref="Resources.CalendarWhite"/>
+    /// depending on the color brightness
+    /// </summary>
+    /// <param name="skinColor">the current skin color</param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void SetCalendarIcon(Color skinColor)
     {
         float brightness = skinColor.GetBrightness();
@@ -373,9 +508,10 @@ public partial class CustomDateTimePicker : DateTimePicker
     }
 
     /// <summary>
-    /// 
+    /// changes the cursor when the mouse enters the icon area
     /// </summary>
     /// <param name="location"></param>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void ChangeCursor(Point location)
     {
         RectangleF area = IconButtonArea;
