@@ -584,6 +584,15 @@ public partial class CuteButton : Button
     }
 
     /// <summary>
+    /// returns the new instance of <see cref="CuteButtonAccessibleObject"/> class
+    /// </summary>
+    /// <returns>the new instance of <see cref="CuteButtonAccessibleObject"/> class</returns>
+    protected override AccessibleObject CreateAccessibilityInstance()
+    {
+        return new CuteButtonAccessibleObject(this);
+    }
+
+    /// <summary>
     /// raises the <see cref="Control.HandleCreated"/> event
     /// </summary>
     /// <param name="e"></param>
