@@ -2,10 +2,14 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 
 namespace WinformsControls.Properties;
+
+#nullable enable
 
 /// <summary>
 /// A strongly-typed resource class, for looking up localized strings, etc.
@@ -19,8 +23,8 @@ namespace WinformsControls.Properties;
 [CompilerGeneratedAttribute()]
 internal sealed partial class Resources
 {
-    private static ResourceManager _resourceManager;
-    private static CultureInfo _resourceCulture;
+    private static ResourceManager? _resourceManager;
+    private static CultureInfo? _resourceCulture;
 
     /// <summary>
     /// creates a new instance of the <see cref="Resources"/> class
@@ -55,21 +59,42 @@ internal sealed partial class Resources
     /// </summary>
     internal static CultureInfo Culture
     {
-        get => _resourceCulture;
-        set => _resourceCulture = value;
+        get
+        {
+            if(object.ReferenceEquals(_resourceCulture, null))
+            {
+                _resourceCulture = CultureInfo.CurrentCulture;
+            }
+
+            return _resourceCulture;
+        }
+        set
+        {
+            if(value == null)
+            {
+                throw new ArgumentNullException(nameof(value), "you must specify the culture");
+            }
+
+            if(value == Culture)
+            {
+                return;
+            }
+
+            _resourceCulture = value;
+        }
     }
 
     /// <summary>
     /// gets the CalendarDark image object
     /// </summary>
-    internal static Image CalendarDark
+    internal static Image? CalendarDark
     {
         get
         {
             string resourceName = nameof(CalendarDark);
-            bool found = TryGetResource(resourceName, out object resource);
+            object? resource = GetResource(resourceName);
             
-            if(found && resource is Bitmap calendarDark)
+            if(resource != null && resource is Bitmap calendarDark)
             {
                 return calendarDark;
             }
@@ -81,14 +106,14 @@ internal sealed partial class Resources
     /// <summary>
     /// gets a CalendarWhite image object
     /// </summary>
-    internal static Image CalendarWhite
+    internal static Image? CalendarWhite
     {
         get
         {
             string resourceName = nameof(CalendarWhite);
-            bool found = TryGetResource(resourceName, out object resource);
+            object? resource = GetResource(resourceName);
 
-            if(found && resource is Bitmap calendarWhite)
+            if(resource != null && resource is Bitmap calendarWhite)
             {
                 return calendarWhite;
             }
@@ -103,9 +128,9 @@ internal sealed partial class Resources
     /// </summary>
     /// <param name="resourceName">the name of the resource</param>
     /// <returns>the resource object found otherwise <see langword="null"/></returns>
-    internal static object GetResource(string resourceName)
+    internal static object? GetResource(string? resourceName)
     {
-        bool found = TryGetResource(resourceName, out object resource);
+        bool found = TryGetResource(resourceName, out object? resource);
         if(found)
         {
             return resource;
@@ -120,7 +145,7 @@ internal sealed partial class Resources
     /// <param name="resourceName">the name of the resource</param>
     /// <param name="resource">the resource object found</param>
     /// <returns><see langword="true"/> if the resource was found otherwise <see langword="false"/></returns>
-    private static bool TryGetResource(string resourceName, out object resource)
+    private static bool TryGetResource(string? resourceName, out object? resource)
     {
         if(string.IsNullOrWhiteSpace(resourceName))
         {
@@ -136,3 +161,5 @@ internal sealed partial class Resources
         return resource != null;
     }
 }
+
+#nullable disable
