@@ -22,6 +22,7 @@ public partial class MainForm : Form
             this.toggleButton = new WinformsControls.ToggleButton();
             this.cuteButton1 = new WinformsControls.CuteButton();
             this.clock1 = new WinformsControls.Clock();
+            this.customDateTimePicker1 = new WinformsControls.CustomDateTimePicker();
             this.SuspendLayout();
             // 
             // firstButton
@@ -81,10 +82,23 @@ public partial class MainForm : Form
             // 
             this.clock1.BackColor = System.Drawing.Color.White;
             this.clock1.ForeColor = System.Drawing.Color.Black;
-            this.clock1.Location = new System.Drawing.Point(340, 316);
+            this.clock1.Location = new System.Drawing.Point(327, 358);
             this.clock1.Name = "clock1";
             this.clock1.Size = new System.Drawing.Size(250, 250);
             this.clock1.TabIndex = 4;
+            // 
+            // customDateTimePicker1
+            // 
+            this.customDateTimePicker1.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.customDateTimePicker1.BorderSize = 0;
+            this.customDateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.customDateTimePicker1.Location = new System.Drawing.Point(340, 85);
+            this.customDateTimePicker1.MinimumSize = new System.Drawing.Size(0, 35);
+            this.customDateTimePicker1.Name = "customDateTimePicker1";
+            this.customDateTimePicker1.Size = new System.Drawing.Size(250, 35);
+            this.customDateTimePicker1.SkinColor = System.Drawing.Color.MediumSlateBlue;
+            this.customDateTimePicker1.TabIndex = 5;
+            this.customDateTimePicker1.TextColor = System.Drawing.Color.White;
             // 
             // MainForm
             // 
@@ -92,6 +106,7 @@ public partial class MainForm : Form
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(993, 620);
+            this.Controls.Add(this.customDateTimePicker1);
             this.Controls.Add(this.clock1);
             this.Controls.Add(this.cuteButton1);
             this.Controls.Add(this.firstButton);
@@ -107,4 +122,5 @@ public partial class MainForm : Form
     private ToggleButton toggleButton;
     private CuteButton cuteButton1;
     private Clock clock1;
+    private CustomDateTimePicker customDateTimePicker1;
 }

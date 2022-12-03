@@ -31,6 +31,7 @@ internal sealed partial class Resources
     {
     }
 
+    
     /// <summary>
     /// gets the ResourceManager
     /// </summary>
@@ -66,9 +67,9 @@ internal sealed partial class Resources
         get
         {
             string resourceName = nameof(CalendarDark);
-            bool resourceFound = TryGetResource(resourceName, out object resource);
+            bool found = TryGetResource(resourceName, out object resource);
             
-            if(resourceFound && resource is Bitmap calendarDark)
+            if(found && resource is Bitmap calendarDark)
             {
                 return calendarDark;
             }
@@ -85,9 +86,9 @@ internal sealed partial class Resources
         get
         {
             string resourceName = nameof(CalendarWhite);
-            bool resourceFound = TryGetResource(resourceName, out object resource);
+            bool found = TryGetResource(resourceName, out object resource);
 
-            if(resourceFound && resource is Bitmap calendarWhite)
+            if(found && resource is Bitmap calendarWhite)
             {
                 return calendarWhite;
             }
@@ -101,11 +102,11 @@ internal sealed partial class Resources
     /// this method is accessible only for this library
     /// </summary>
     /// <param name="resourceName">the name of the resource</param>
-    /// <returns>the resource object in the Resources folder</returns>
+    /// <returns>the resource object found otherwise <see langword="null"/></returns>
     internal static object GetResource(string resourceName)
     {
-        bool resourceFound = TryGetResource(resourceName, out object resource);
-        if(resourceFound)
+        bool found = TryGetResource(resourceName, out object resource);
+        if(found)
         {
             return resource;
         }
@@ -117,7 +118,8 @@ internal sealed partial class Resources
     /// performs all the operations to get the resource located in the Resources folder
     /// </summary>
     /// <param name="resourceName">the name of the resource</param>
-    /// <returns>the resource object in the Resources folder</returns>
+    /// <param name="resource">the resource object found</param>
+    /// <returns><see langword="true"/> if the resource was found otherwise <see langword="false"/></returns>
     private static bool TryGetResource(string resourceName, out object resource)
     {
         if(string.IsNullOrWhiteSpace(resourceName))
@@ -126,9 +128,11 @@ internal sealed partial class Resources
             return false;
         }
 
+        
+        ResourceManager manager = ResourceManager;
         CultureInfo culture = Culture;
         
-        resource = ResourceManager.GetObject(resourceName, culture);
+        resource = manager.GetObject(resourceName, culture);
         return resource != null;
     }
 }
