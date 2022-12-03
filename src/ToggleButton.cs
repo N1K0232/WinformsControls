@@ -5,6 +5,10 @@ namespace WinformsControls;
 
 public partial class ToggleButton : CheckBox
 {
+	private static readonly object s_sliderColorChanged = new();
+	private static readonly object s_toggleColorChanged = new();
+	private static readonly object s_solidStyleChanged = new();
+
 	private Color _onSliderColor = Color.RoyalBlue;
 	private Color _offSliderColor = Color.Gray;
 
@@ -32,6 +36,7 @@ public partial class ToggleButton : CheckBox
 	/// <summary>
 	/// gets or sets the color of the slide when the <see cref="ToggleButton"/> is checked
 	/// </summary>
+	[Browsable(true)]
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("toggle appearance")]
 	public virtual Color OnSliderColor
@@ -54,14 +59,15 @@ public partial class ToggleButton : CheckBox
 
 			_onSliderColor = value;
 
-			OnSlideColorChanged(EventArgs.Empty);
 			Invalidate();
+			OnSlideColorChanged(EventArgs.Empty);
 		}
 	}
 
 	/// <summary>
 	/// gets or sets the color of the slide when the <see cref="ToggleButton"/> is unchecked
 	/// </summary>
+	[Browsable(true)]
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("toggle appearance")]
 	public virtual Color OffSliderColor
@@ -84,14 +90,15 @@ public partial class ToggleButton : CheckBox
 
 			_offSliderColor = value;
 
-			OnSlideColorChanged(EventArgs.Empty);
 			Invalidate();
+			OnSlideColorChanged(EventArgs.Empty);
 		}
 	}
 
 	/// <summary>
 	/// gets or sets the color of the toggle when the <see cref="ToggleButton"/> is checked
 	/// </summary>
+	[Browsable(true)]
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("toggle appearance")]
 	public virtual Color OnToggleColor
@@ -114,14 +121,15 @@ public partial class ToggleButton : CheckBox
 
 			_onToggleColor = value;
 
-			OnToggleColorChanged(EventArgs.Empty);
 			Invalidate();
+			OnToggleColorChanged(EventArgs.Empty);
 		}
 	}
 
 	/// <summary>
 	/// gets or sets the color of the toggle when the <see cref="ToggleButton"/> is unchecked
 	/// </summary>
+	[Browsable(true)]
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("toggle appearance")]
 	public virtual Color OffToggleColor
@@ -144,19 +152,23 @@ public partial class ToggleButton : CheckBox
 
 			_offToggleColor = value;
 
-			OnToggleColorChanged(EventArgs.Empty);
 			Invalidate();
+			OnToggleColorChanged(EventArgs.Empty);
 		}
 	}
 
 	/// <summary>
 	/// gets or sets the style of the toggle
 	/// </summary>
+	[Browsable(true)]
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[Category("toggle appearance")]
 	public bool SolidStyle
 	{
-		get { return _solidStyle; }
+		get
+		{
+			return _solidStyle;
+		}
 		set
 		{
 			if (value == SolidStyle)
@@ -166,14 +178,15 @@ public partial class ToggleButton : CheckBox
 
 			_solidStyle = value;
 
-			OnSolidStyleChanged(EventArgs.Empty);
 			Invalidate();
+			OnSolidStyleChanged(EventArgs.Empty);
 		}
 	}
 
 	/// <summary>
 	/// gets the left arc of the toggle
 	/// </summary>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	private Rectangle LeftArc
 	{
 		get
@@ -189,6 +202,7 @@ public partial class ToggleButton : CheckBox
 	/// <summary>
 	/// gets the right arc of the toggle
 	/// </summary>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	private Rectangle RightArc
 	{
 		get
@@ -203,38 +217,84 @@ public partial class ToggleButton : CheckBox
 	}
 
 
-	public event EventHandler SlideColorChanged;
-	public event EventHandler ToggleColorChanged;
-	public event EventHandler SolidStyleChanged;
+	/// <summary>
+	/// occurs when the <see cref="OnSliderColor"/> or <see cref="OffSliderColor"/> changes its value
+	/// </summary>
+	[Browsable(true)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Category("toggle events")]
+	public event EventHandler SlideColorChanged
+	{
+		add => Events.AddHandler(s_sliderColorChanged, value);
+		remove => Events.RemoveHandler(s_sliderColorChanged, value);
+	}
 
 	/// <summary>
-	/// raises the <see cref="ToggleButton.SlideColorChanged"/> event
+	/// occurs when the <see cref="OnToggleColor"/> or <see cref="OffToggleColor"/> changes its value
 	/// </summary>
-	/// <param name="e"></param>
+	[Browsable(true)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Category("toggle events")]
+	public event EventHandler ToggleColorChanged
+	{
+		add => Events.AddHandler(s_toggleColorChanged, value);
+		remove => Events.RemoveHandler(s_toggleColorChanged, value);
+	}
+
+	/// <summary>
+	/// occurs when the <see cref="SolidStyle"/> property changes value
+	/// </summary>
+	[Browsable(true)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Category("toggle events")]
+	public event EventHandler SolidStyleChanged
+	{
+		add => Events.AddHandler(s_solidStyleChanged, value);
+		remove => Events.RemoveHandler(s_solidStyleChanged, value);
+	}
+
+
+	/// <summary>
+	/// raises the <see cref="SlideColorChanged"/> event
+	/// </summary>
+	/// <param name="e">the event data</param>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	protected virtual void OnSlideColorChanged(EventArgs e)
 	{
-		EventHandler handler = SlideColorChanged;
+		EventHandler handler = (EventHandler)Events[s_sliderColorChanged];
 		handler?.Invoke(this, e);
 	}
 
 	/// <summary>
-	/// raises the <see cref="ToggleButton.ToggleColorChanged"/> event
+	/// raises the <see cref="ToggleColorChanged"/> event
 	/// </summary>
-	/// <param name="e"></param>
+	/// <param name="e">the event data</param>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	protected virtual void OnToggleColorChanged(EventArgs e)
 	{
-		EventHandler handler = ToggleColorChanged;
+		EventHandler handler = (EventHandler)Events[s_toggleColorChanged];
 		handler?.Invoke(this, e);
 	}
 
 	/// <summary>
-	/// raises the <see cref="ToggleButton.SolidStyleChanged"/> event
+	/// raises the <see cref="SolidStyleChanged"/> event
 	/// </summary>
-	/// <param name="e"></param>
+	/// <param name="e">the event data</param>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	protected virtual void OnSolidStyleChanged(EventArgs e)
 	{
-		EventHandler handler = SolidStyleChanged;
+		EventHandler handler = (EventHandler)Events[s_solidStyleChanged];
 		handler?.Invoke(this, e);
+	}
+
+	/// <summary>
+	/// creates the <see cref="ToggleButtonAccessibleObject"/> instance
+	/// </summary>
+	/// <returns>the <see cref="ToggleButtonAccessibleObject"/> instance</returns>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	protected override AccessibleObject CreateAccessibilityInstance()
+	{
+		return new ToggleButtonAccessibleObject(this);
 	}
 
 	/// <summary>
@@ -266,13 +326,13 @@ public partial class ToggleButton : CheckBox
 	{
 		GraphicsPath path = GetFigurePath();
 		Color backColor = GetSlideColor(isChecked);
-		SolidBrush brush = new(backColor);
+		Brush backColorBrush = new SolidBrush(backColor);
 
 		if (isChecked)
 		{
 			if (_solidStyle)
 			{
-				graphics.FillPath(brush, path);
+				graphics.FillPath(backColorBrush, path);
 			}
 			else
 			{
@@ -283,7 +343,7 @@ public partial class ToggleButton : CheckBox
 		{
 			if (_solidStyle)
 			{
-				graphics.FillPath(brush, path);
+				graphics.FillPath(backColorBrush, path);
 			}
 			else
 			{
@@ -292,6 +352,7 @@ public partial class ToggleButton : CheckBox
 		}
 
 		path.Dispose();
+		backColorBrush.Dispose();
 	}
 
 	/// <summary>
@@ -304,7 +365,7 @@ public partial class ToggleButton : CheckBox
 	private void DrawToggle(Graphics graphics, int width, int height, bool isChecked)
 	{
 		Color toggleColor = GetToggleColor(isChecked);
-		SolidBrush brush = new(toggleColor);
+		Brush toggleColorBrush = new SolidBrush(toggleColor);
 
 		int toggleSize = height - 5;
 		Rectangle rectangle;
@@ -318,7 +379,8 @@ public partial class ToggleButton : CheckBox
 			rectangle = new Rectangle(2, 2, toggleSize, toggleSize);
 		}
 
-		graphics.FillEllipse(brush, rectangle);
+		graphics.FillEllipse(toggleColorBrush, rectangle);
+		toggleColorBrush.Dispose();
 	}
 
 	/// <summary>
