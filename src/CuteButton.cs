@@ -538,35 +538,58 @@ public partial class CuteButton : Button
 
         Control container = Parent;
         Graphics graphics = pevent.Graphics;
+
         graphics.SmoothingMode = SmoothingMode.AntiAlias;
         graphics.Clear(container.BackColor);
 
         int firstColorTransparency = FirstColorTransparency;
         int secondColorTransparency = SecondColorTransparency;
+
+        int borderSize = BorderSize;
+
+        int width = Width;
+        int height = Height;
+
         float angle = Angle;
+
         string text = Text;
         Font font = Font;
         SizeF textSize = graphics.MeasureString(text, font);
-        float textWidth = (Width - textSize.Width) / 2;
-        float textHeight = (Height - textSize.Height) / 2;
+
+        float textWidth = (width - textSize.Width) / 2;
+        float textHeight = (height - textSize.Height) / 2;
 
         Color firstColor = Color.FromArgb(firstColorTransparency, FirstColor);
         Color secondColor = Color.FromArgb(secondColorTransparency, SecondColor);
+
         Color borderColor = _focused ? BorderFocusColor : BorderColor;
         Color textColor = ForeColor;
+
         Rectangle rectangle = ClientRectangle;
 
-        Pen borderPen = new(borderColor, 2);
         Brush backgroundBrush = new LinearGradientBrush(rectangle, firstColor, secondColor, angle);
         Brush textBrush = new SolidBrush(textColor);
 
-        graphics.DrawRectangle(borderPen, rectangle);
+        if (borderSize >= 1)
+        {
+            using var borderPen = new Pen(borderColor, borderSize);
+            graphics.DrawRectangle(borderPen, rectangle);
+        }
+
         graphics.FillRectangle(backgroundBrush, rectangle);
         graphics.DrawString(text, font, textBrush, textWidth, textHeight);
 
-        borderPen.Dispose();
         backgroundBrush.Dispose();
         textBrush.Dispose();
+    }
+
+    /// <summary>
+    /// returns the new instance of <see cref="CuteButtonAccessibleObject"/> class
+    /// </summary>
+    /// <returns>the new instance of <see cref="CuteButtonAccessibleObject"/> class</returns>
+    protected override AccessibleObject CreateAccessibilityInstance()
+    {
+        return new CuteButtonAccessibleObject(this);
     }
 
     /// <summary>
@@ -616,7 +639,7 @@ public partial class CuteButton : Button
     /// <summary>
     /// initializes the base property of the <see cref="CuteButton"/> control
     /// </summary>
-    internal virtual void Initialize()
+    protected internal virtual void Initialize()
     {
         ForeColor = Color.WhiteSmoke;
         Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);

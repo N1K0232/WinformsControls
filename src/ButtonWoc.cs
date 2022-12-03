@@ -41,19 +41,7 @@ public partial class ButtonWoc : Button
         SetStyle(ControlStyles.ContainerControl, false);
         SetStyle(ControlStyles.Opaque, false);
 
-        FlatAppearance.BorderColor = Color.White;
-        FlatAppearance.BorderSize = 0;
-        FlatAppearance.MouseOverBackColor = Color.White;
-        FlatAppearance.MouseDownBackColor = Color.White;
-        FlatStyle = FlatStyle.Flat;
-
-        BackColor = Color.Transparent;
-        Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-
-        MinimumSize = new Size(150, 50);
-
-        MouseEnter += new EventHandler(OnMouseEnter);
-        MouseLeave += new EventHandler(OnMouseLeave);
+        Initialize();
     }
 
 
@@ -408,6 +396,11 @@ public partial class ButtonWoc : Button
     }
 
 
+    protected override AccessibleObject CreateAccessibilityInstance()
+    {
+        return new ButtonWocAccessibleObject(this);
+    }
+
     /// <summary>
     /// called when the mouse enters the control area
     /// </summary>
@@ -428,5 +421,22 @@ public partial class ButtonWoc : Button
     {
         _hovering = false;
         Invalidate();
+    }
+
+    protected internal virtual void Initialize()
+    {
+        FlatAppearance.BorderColor = Color.White;
+        FlatAppearance.BorderSize = 0;
+        FlatAppearance.MouseOverBackColor = Color.White;
+        FlatAppearance.MouseDownBackColor = Color.White;
+        FlatStyle = FlatStyle.Flat;
+
+        BackColor = Color.Transparent;
+        Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+
+        MinimumSize = new Size(150, 50);
+
+        MouseEnter += new EventHandler(OnMouseEnter);
+        MouseLeave += new EventHandler(OnMouseLeave);
     }
 }
