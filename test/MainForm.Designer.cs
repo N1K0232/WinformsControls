@@ -1,5 +1,6 @@
 ﻿using WinformsControls;
 using System.ComponentModel;
+using WinformsControls.Extensions;
 
 namespace WinformsTest;
 
@@ -9,10 +10,16 @@ public partial class MainForm : Form
 
     protected override void Dispose(bool disposing)
     {
-        if (disposing && (components != null))
+        if (disposing)
         {
-            components.Dispose();
+            if(components != null)
+            {
+                components.Dispose();
+            }
+
+            Controls.RemoveRange();
         }
+        
         base.Dispose(disposing);
     }
 
@@ -21,8 +28,9 @@ public partial class MainForm : Form
             this.firstButton = new WinformsControls.RoundButton();
             this.toggleButton = new WinformsControls.ToggleButton();
             this.cuteButton1 = new WinformsControls.CuteButton();
-            this.clock1 = new WinformsControls.Clock();
             this.customDateTimePicker1 = new WinformsControls.CustomDateTimePicker();
+            this.buttonWoc1 = new WinformsControls.ButtonWoc();
+            this.clock1 = new WinformsControls.Clock();
             this.SuspendLayout();
             // 
             // firstButton
@@ -62,6 +70,7 @@ public partial class MainForm : Form
             this.cuteButton1.Angle = 10F;
             this.cuteButton1.BorderColor = System.Drawing.Color.Magenta;
             this.cuteButton1.BorderFocusColor = System.Drawing.Color.DarkMagenta;
+            this.cuteButton1.BorderSize = 0;
             this.cuteButton1.FirstColor = System.Drawing.Color.Yellow;
             this.cuteButton1.FirstColorTransparency = 80;
             this.cuteButton1.FlatAppearance.BorderColor = System.Drawing.Color.White;
@@ -78,15 +87,6 @@ public partial class MainForm : Form
             this.cuteButton1.Text = "cuteButton1";
             this.cuteButton1.UseVisualStyleBackColor = true;
             // 
-            // clock1
-            // 
-            this.clock1.BackColor = System.Drawing.Color.White;
-            this.clock1.ForeColor = System.Drawing.Color.Black;
-            this.clock1.Location = new System.Drawing.Point(327, 358);
-            this.clock1.Name = "clock1";
-            this.clock1.Size = new System.Drawing.Size(250, 250);
-            this.clock1.TabIndex = 4;
-            // 
             // customDateTimePicker1
             // 
             this.customDateTimePicker1.BorderColor = System.Drawing.Color.PaleVioletRed;
@@ -100,14 +100,47 @@ public partial class MainForm : Form
             this.customDateTimePicker1.TabIndex = 5;
             this.customDateTimePicker1.TextColor = System.Drawing.Color.White;
             // 
+            // buttonWoc1
+            // 
+            this.buttonWoc1.BackColor = System.Drawing.Color.Transparent;
+            this.buttonWoc1.BorderColor = System.Drawing.Color.Red;
+            this.buttonWoc1.ButtonColor = System.Drawing.Color.Blue;
+            this.buttonWoc1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonWoc1.FlatAppearance.BorderSize = 0;
+            this.buttonWoc1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonWoc1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonWoc1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonWoc1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.buttonWoc1.HoverBorderColor = System.Drawing.Color.Black;
+            this.buttonWoc1.HoverButtonColor = System.Drawing.Color.Yellow;
+            this.buttonWoc1.HoverTextColor = System.Drawing.Color.Red;
+            this.buttonWoc1.Location = new System.Drawing.Point(677, 412);
+            this.buttonWoc1.MinimumSize = new System.Drawing.Size(150, 50);
+            this.buttonWoc1.Name = "buttonWoc1";
+            this.buttonWoc1.Size = new System.Drawing.Size(188, 62);
+            this.buttonWoc1.TabIndex = 6;
+            this.buttonWoc1.Text = "buttonWoc1";
+            this.buttonWoc1.TextColor = System.Drawing.Color.White;
+            this.buttonWoc1.UseVisualStyleBackColor = false;
+            // 
+            // clock1
+            // 
+            this.clock1.BackColor = System.Drawing.Color.White;
+            this.clock1.ForeColor = System.Drawing.Color.Black;
+            this.clock1.Location = new System.Drawing.Point(200, 311);
+            this.clock1.Name = "clock1";
+            this.clock1.Size = new System.Drawing.Size(250, 250);
+            this.clock1.TabIndex = 7;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(993, 620);
-            this.Controls.Add(this.customDateTimePicker1);
             this.Controls.Add(this.clock1);
+            this.Controls.Add(this.buttonWoc1);
+            this.Controls.Add(this.customDateTimePicker1);
             this.Controls.Add(this.cuteButton1);
             this.Controls.Add(this.firstButton);
             this.Controls.Add(this.toggleButton);
@@ -121,6 +154,7 @@ public partial class MainForm : Form
     private RoundButton firstButton;
     private ToggleButton toggleButton;
     private CuteButton cuteButton1;
-    private Clock clock1;
     private CustomDateTimePicker customDateTimePicker1;
+    private ButtonWoc buttonWoc1;
+    private Clock clock1;
 }
