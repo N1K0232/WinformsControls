@@ -35,6 +35,11 @@ public partial class Clock : UserControl
         base.OnLoad(e);
     }
 
+    protected override AccessibleObject CreateAccessibilityInstance()
+    {
+        return new ClockAccessibleObject(this);
+    }
+
     /// <summary>
     /// during every tick of the timer the time is updated and the text of the label is updated
     /// </summary>
