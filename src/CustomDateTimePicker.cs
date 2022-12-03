@@ -2,6 +2,9 @@
 
 namespace WinformsControls;
 
+/// <summary>
+/// 
+/// </summary>
 public partial class CustomDateTimePicker : DateTimePicker
 {
     private static readonly object s_skinColorChanged = new();
@@ -29,6 +32,10 @@ public partial class CustomDateTimePicker : DateTimePicker
     public CustomDateTimePicker()
     {
         SetStyle(ControlStyles.UserPaint, true);
+        SetStyle(ControlStyles.ResizeRedraw, true);
+
+        SetStyle(ControlStyles.Opaque, false);
+        SetStyle(ControlStyles.ContainerControl, false);
 
         MinimumSize = new Size(0, 35);
         Font = new Font("Segoe UI", 9.5F);
