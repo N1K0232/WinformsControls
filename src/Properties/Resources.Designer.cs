@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
@@ -56,10 +57,31 @@ internal sealed partial class Resources
     /// <summary>
     /// gets or sets the culture for this object
     /// </summary>
-    internal static CultureInfo? Culture
+    internal static CultureInfo Culture
     {
-        get => _resourceCulture;
-        set => _resourceCulture = value;
+        get
+        {
+            if(object.ReferenceEquals(_resourceCulture, null))
+            {
+                _resourceCulture = CultureInfo.CurrentCulture;
+            }
+
+            return _resourceCulture;
+        }
+        set
+        {
+            if(value == null)
+            {
+                throw new ArgumentNullException(nameof(value), "you must specify the culture");
+            }
+
+            if(value == Culture)
+            {
+                return;
+            }
+
+            _resourceCulture = value;
+        }
     }
 
     /// <summary>
@@ -132,8 +154,8 @@ internal sealed partial class Resources
         }
 
         
-        ResourceManager? manager = ResourceManager;
-        CultureInfo? culture = Culture;
+        ResourceManager manager = ResourceManager;
+        CultureInfo culture = Culture;
         
         resource = manager.GetObject(resourceName, culture);
         return resource != null;
