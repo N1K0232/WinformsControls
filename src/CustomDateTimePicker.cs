@@ -16,6 +16,7 @@ public partial class CustomDateTimePicker : DateTimePicker
     private const int CalendarIconWidth = 34;
     private const int ArrowIconWidth = 17;
 
+
     private Color _skinColor = Color.MediumSlateBlue;
     private Color _textColor = Color.White;
     private Color _borderColor = Color.PaleVioletRed;
@@ -185,6 +186,11 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
         set
         {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value), "Icon can't be null");
+            }
+
             if (value == CalendarIcon)
             {
                 return;
@@ -208,6 +214,11 @@ public partial class CustomDateTimePicker : DateTimePicker
         }
         set
         {
+            if (value.IsEmpty)
+            {
+                throw new ArgumentException("Invalid area", nameof(IconButtonArea));
+            }
+
             if (value == IconButtonArea)
             {
                 return;
@@ -242,6 +253,14 @@ public partial class CustomDateTimePicker : DateTimePicker
             }
         }
     }
+
+    /// <summary>
+    /// gets the status of the control <see langword="true"/> if the status is dropped down
+    /// otherwise <see langword="false"/>
+    /// </summary>
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    private bool DroppedDown => _droppedDown;
 
 
     /// <summary>
@@ -383,6 +402,7 @@ public partial class CustomDateTimePicker : DateTimePicker
     protected override void OnPaint(PaintEventArgs e)
     {
         Graphics graphics = CreateGraphics();
+
         float width = Width - 0.5F;
         float height = Height - 0.5F;
         var clientArea = new RectangleF(0, 0, width, height);
@@ -419,7 +439,7 @@ public partial class CustomDateTimePicker : DateTimePicker
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void DrawRectangle(Graphics graphics, RectangleF clientArea)
     {
-        bool droppedDown = _droppedDown;
+        bool droppedDown = DroppedDown;
 
         float iconWidth = CalendarIconWidth;
         var iconArea = new RectangleF(clientArea.Width - iconWidth, 0, iconWidth, clientArea.Height);
@@ -448,18 +468,18 @@ public partial class CustomDateTimePicker : DateTimePicker
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void DrawImage(Graphics graphics)
     {
-        Image calendarIcon = CalendarIcon;
+        Image icon = CalendarIcon;
 
         int width = Width;
         int height = Height;
 
-        int iconWidth = calendarIcon.Width;
-        int iconHeight = calendarIcon.Height;
+        int iconWidth = icon.Width;
+        int iconHeight = icon.Height;
 
         int x = width - iconWidth;
         int y = height - iconHeight;
 
-        graphics.DrawImage(calendarIcon, x - 10, y / 2);
+        graphics.DrawImage(icon, x - 10, y / 2);
     }
 
     /// <summary>
@@ -515,8 +535,9 @@ public partial class CustomDateTimePicker : DateTimePicker
     private void ChangeCursor(Point location)
     {
         RectangleF area = IconButtonArea;
+        bool hasLocation = area.Contains(location);
 
-        if (area.Contains(location))
+        if (hasLocation)
         {
             Cursor = Cursors.Hand;
         }
