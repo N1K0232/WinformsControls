@@ -390,7 +390,10 @@ public partial class ButtonWoc : Button
         Font font = Font;
 
         SizeF textSize = g.MeasureString(text, font);
-        g.DrawString(text, font, brush, (width - textSize.Width) / 2, (height - textSize.Height) / 2);
+        float textWidth = (width - textSize.Width) / 2;
+        float textHeight = (height - textSize.Height) / 2;
+
+        g.DrawString(text, font, brush, textWidth, textHeight);
 
         brush.Dispose();
     }
