@@ -161,6 +161,15 @@ public partial class RoundButton : Button
         }
     }
 
+    public override bool Focused
+    {
+        get
+        {
+            bool focused = base.Focused;
+            return focused & _focused;
+        }
+    }
+
 
     /// <summary>
     /// occurs when the <see cref="BorderSize"/> property changes
@@ -303,7 +312,10 @@ public partial class RoundButton : Button
         int borderSize = BorderSize;
         int borderRadius = BorderRadius;
 
-        RectangleF borderRectangle = new(1, 1, Width - 0.8F, Height - 1);
+        float borderWidth = width - 0.8F;
+        float borderHeight = height - 1F;
+
+        var borderRectangle = new RectangleF(1, 1, borderWidth, borderHeight);
 
         GraphicsPath borderPath = GetFigurePath(borderRectangle, 1F);
         Pen borderPen = null;
@@ -341,7 +353,7 @@ public partial class RoundButton : Button
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void DrawSurface(Graphics graphics, int width, int height)
     {
-        RectangleF surfaceRectangle = new(0, 0, width, height);
+        var surfaceRectangle = new RectangleF(0, 0, width, height);
         int borderRadius = BorderRadius;
 
         Control parent = Parent;
@@ -418,8 +430,7 @@ public partial class RoundButton : Button
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void InvalidateIfDesignMode()
     {
-        bool designMode = DesignMode;
-        if (designMode)
+        if (DesignMode)
         {
             Invalidate();
         }
@@ -485,7 +496,7 @@ public partial class RoundButton : Button
         float width = rectangle.Width;
         float height = rectangle.Height;
 
-        GraphicsPath path = new();
+        var path = new GraphicsPath();
         path.StartFigure();
         path.AddArc(x, y, radius, radius, 180, 90);
         path.AddArc(width - radius, y, radius, radius, 270, 90);
