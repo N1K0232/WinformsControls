@@ -43,7 +43,9 @@ public partial class ComboBlock : UserControl
         base.Dispose(disposing);
     }
 
-
+    /// <summary>
+    /// initializes the graphics for this control
+    /// </summary>
     protected internal virtual void Initialize()
     {
         components = new Container();
@@ -66,6 +68,7 @@ public partial class ComboBlock : UserControl
         cmbList.ForeColor = listTextColor;
         cmbList.Font = defaultFont;
         cmbList.TabIndex = 0;
+        cmbList.DropDownStyle = ComboBoxStyle.DropDownList;
         cmbList.SelectedIndexChanged += new EventHandler(OnSelectedIndexChanged);
         cmbList.TextChanged += new EventHandler(OnTextChanged);
 
@@ -106,7 +109,11 @@ public partial class ComboBlock : UserControl
         AdjustComboBoxDimensions();
     }
 
-
+    /// <summary>
+    /// paints the icon button
+    /// </summary>
+    /// <param name="sender">the object that invoked the event</param>
+    /// <param name="e">the event data</param>
     private void OnIconPaint(object sender, PaintEventArgs e)
     {
         Color iconColor = IconColor;
@@ -131,6 +138,9 @@ public partial class ComboBlock : UserControl
         graphics.DrawPath(pen, path);
     }
 
+    /// <summary>
+    /// updates the location of the combo box when the control is resized
+    /// </summary>
     private void AdjustComboBoxDimensions()
     {
         int x = Width - Padding.Right - cmbList.Width;
