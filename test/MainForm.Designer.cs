@@ -16,8 +16,6 @@ public partial class MainForm : Form
             {
                 components.Dispose();
             }
-
-            Controls.RemoveRange();
         }
         
         base.Dispose(disposing);

@@ -34,6 +34,12 @@ public partial class ComboBlock : UserControl
 	{
 		SetStyle(ControlStyles.UserPaint, true);
 		SetStyle(ControlStyles.ContainerControl, true);
+
+		SetStyle(ControlStyles.Selectable, true);
+		SetStyle(ControlStyles.ResizeRedraw, true);
+
+		SetStyle(ControlStyles.Opaque, false);
+
 		Initialize();
 	}
 
@@ -42,7 +48,13 @@ public partial class ComboBlock : UserControl
 	{
 		get
 		{
-			return _backColor;
+			Color c = _backColor;
+			if (c.IsEmpty)
+			{
+				c = base.BackColor;
+			}
+
+			return c;
 		}
 		set
 		{
@@ -57,6 +69,7 @@ public partial class ComboBlock : UserControl
 			}
 
 			_backColor = value;
+
 			lblText.BackColor = value;
 			btnIcon.BackColor = value;
 		}
@@ -247,11 +260,6 @@ public partial class ComboBlock : UserControl
 		}
 		set
 		{
-			if (value is null)
-			{
-				throw new ArgumentException("you must add at least one member", nameof(DataSource));
-			}
-
 			if (value == DataSource)
 			{
 				return;
@@ -305,11 +313,6 @@ public partial class ComboBlock : UserControl
 		}
 		set
 		{
-			if (value is null)
-			{
-				throw new ArgumentException("value can't be null", nameof(SelectedItem));
-			}
-
 			if (value == SelectedItem)
 			{
 				return;
@@ -344,11 +347,6 @@ public partial class ComboBlock : UserControl
 		}
 		set
 		{
-			if (string.IsNullOrWhiteSpace(value))
-			{
-				throw new ArgumentException("Invalid value", nameof(DisplayMember));
-			}
-
 			if (value == DisplayMember)
 			{
 				return;
@@ -366,11 +364,6 @@ public partial class ComboBlock : UserControl
 		}
 		set
 		{
-			if (string.IsNullOrWhiteSpace(value))
-			{
-				throw new ArgumentException("Invalid value", nameof(ValueMember));
-			}
-
 			if (value == ValueMember)
 			{
 				return;
@@ -444,7 +437,7 @@ public partial class ComboBlock : UserControl
 
 	protected virtual void OnBorderSizeChanged(EventArgs e)
 	{
-		EventHandler handler = (EventHandler)Events[s_borderColorChanged];
+		EventHandler handler = (EventHandler)Events[s_borderSizeChanged];
 		handler?.Invoke(this, e);
 	}
 
@@ -454,6 +447,7 @@ public partial class ComboBlock : UserControl
 		{
 			EventHandler handler = (EventHandler)Events[s_selectedIndexChanged];
 			handler?.Invoke(comboBox, e);
+
 			RefreshText();
 		}
 	}
@@ -462,8 +456,7 @@ public partial class ComboBlock : UserControl
 	{
 		if (sender is not null && sender is Button button && button.Name.Equals(btnIcon.Name))
 		{
-			cmbList.Select();
-			cmbList.DroppedDown = true;
+			RefreshStyle();
 		}
 	}
 
@@ -472,12 +465,7 @@ public partial class ComboBlock : UserControl
 		if (sender is not null && sender is Label label && label.Name.Equals(lblText.Name))
 		{
 			OnClick(e);
-
-			cmbList.Select();
-			if (cmbList.DropDownStyle == ComboBoxStyle.DropDownList)
-			{
-				cmbList.DroppedDown = true;
-			}
+			RefreshStyle();
 		}
 	}
 
@@ -510,7 +498,21 @@ public partial class ComboBlock : UserControl
 
 	protected void OnTextChanged(object sender, EventArgs e)
 	{
-		RefreshText();
+		if (sender is not null && sender is ComboBox comboBox && comboBox.Name.Equals(cmbList.Name))
+		{
+			RefreshText();
+		}
+	}
+
+	private void RefreshStyle()
+	{
+		ComboBoxStyle style = DropDownStyle;
+		cmbList.Select();
+
+		if (style == ComboBoxStyle.DropDownList)
+		{
+			cmbList.DroppedDown = true;
+		}
 	}
 
 	private void RefreshText()
