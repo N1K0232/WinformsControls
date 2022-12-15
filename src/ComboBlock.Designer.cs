@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 
 namespace WinformsControls;
 
-public partial class ComboBlock : UserControl
+public partial class ComboBlock
 {
     private static readonly Size defaultSize = new Size(200, 30);
     private static readonly Font defaultFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
@@ -49,7 +49,6 @@ public partial class ComboBlock : UserControl
     protected internal virtual void Initialize()
     {
         components = new Container();
-
         cmbList = new ComboBox();
         lblText = new Label();
         btnIcon = new Button();
@@ -67,7 +66,6 @@ public partial class ComboBlock : UserControl
         cmbList.BackColor = listBackColor;
         cmbList.ForeColor = listTextColor;
         cmbList.Font = defaultFont;
-        cmbList.TabIndex = 0;
         cmbList.DropDownStyle = ComboBoxStyle.DropDownList;
         cmbList.SelectedIndexChanged += new EventHandler(OnSelectedIndexChanged);
         cmbList.TextChanged += new EventHandler(OnTextChanged);
@@ -78,7 +76,6 @@ public partial class ComboBlock : UserControl
         btnIcon.BackColor = backColor;
         btnIcon.Size = new Size(30, 30);
         btnIcon.Cursor = Cursors.Hand;
-        btnIcon.TabIndex = 1;
         btnIcon.Click += new EventHandler(OnIconClick);
         btnIcon.Paint += new PaintEventHandler(OnIconPaint);
 
@@ -88,7 +85,6 @@ public partial class ComboBlock : UserControl
         lblText.TextAlign = ContentAlignment.MiddleLeft;
         lblText.Padding = new Padding(8, 0, 0, 0);
         lblText.Font = defaultFont;
-        lblText.TabIndex = 2;
         lblText.Click += new EventHandler(OnSurfaceClick);
         lblText.MouseEnter += new EventHandler(OnSurfaceEnter);
         lblText.MouseLeave += new EventHandler(OnSurfaceLeave);
@@ -116,26 +112,30 @@ public partial class ComboBlock : UserControl
     /// <param name="e">the event data</param>
     private void OnIconPaint(object sender, PaintEventArgs e)
     {
-        Color iconColor = IconColor;
+        if (sender is not null && sender is Button button && button.Name.Equals(btnIcon.Name))
+        {
 
-        int iconWidth = 14;
-        int iconHeight = 6;
+            Color iconColor = IconColor;
 
-        int x = (btnIcon.Width - iconWidth) / 2;
-        int y = (btnIcon.Height - iconHeight) / 2;
+            int iconWidth = 14;
+            int iconHeight = 6;
 
-        var rectIcon = new Rectangle(x, y, iconWidth, iconHeight);
+            int x = (btnIcon.Width - iconWidth) / 2;
+            int y = (btnIcon.Height - iconHeight) / 2;
 
-        Graphics graphics = e.Graphics;
-        graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            var rectIcon = new Rectangle(x, y, iconWidth, iconHeight);
 
-        using var path = new GraphicsPath();
-        using var pen = new Pen(iconColor, 2);
+            Graphics graphics = e.Graphics;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-        path.AddLine(x, y, x + (iconWidth / 2), rectIcon.Bottom);
-        path.AddLine(x + (iconWidth / 2), rectIcon.Bottom, rectIcon.Right, y);
-        
-        graphics.DrawPath(pen, path);
+            using var path = new GraphicsPath();
+            using var pen = new Pen(iconColor, 2);
+
+            path.AddLine(x, y, x + (iconWidth / 2), rectIcon.Bottom);
+            path.AddLine(x + (iconWidth / 2), rectIcon.Bottom, rectIcon.Right, y);
+
+            graphics.DrawPath(pen, path);
+        }
     }
 
     /// <summary>
