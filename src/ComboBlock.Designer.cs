@@ -115,7 +115,6 @@ public partial class ComboBlock
     {
         if (sender is not null && sender is Button button && button.Name.Equals(_btnIcon.Name))
         {
-
             Color iconColor = IconColor;
 
             int iconWidth = 14;
