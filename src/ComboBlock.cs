@@ -73,8 +73,8 @@ public partial class ComboBlock : UserControl
 
             _backColor = value;
 
-            lblText.BackColor = value;
-            btnIcon.BackColor = value;
+            _lblText.BackColor = value;
+            _btnIcon.BackColor = value;
         }
     }
 
@@ -87,22 +87,22 @@ public partial class ComboBlock : UserControl
         set
         {
             base.ForeColor = value;
-            lblText.ForeColor = value;
+            _lblText.ForeColor = value;
         }
     }
 
     public override Font Font
     {
-        get
-        {
-            return base.Font;
-        }
+        get => base.Font;
         set
         {
-            base.Font = value;
+            if (value != Font)
+            {
+                base.Font = value;
 
-            lblText.Font = value;
-            cmbList.Font = value;
+                _lblText.Font = value;
+                _cmbList.Font = value;
+            }
         }
     }
 
@@ -270,7 +270,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.DropDownStyle;
+            return _cmbList.DropDownStyle;
         }
         set
         {
@@ -279,9 +279,9 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            if (cmbList.DropDownStyle != ComboBoxStyle.Simple)
+            if (_cmbList.DropDownStyle != ComboBoxStyle.Simple)
             {
-                cmbList.DropDownStyle = value;
+                _cmbList.DropDownStyle = value;
             }
         }
     }
@@ -295,7 +295,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.DataSource;
+            return _cmbList.DataSource;
         }
         set
         {
@@ -304,7 +304,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.DataSource = value;
+            _cmbList.DataSource = value;
         }
     }
 
@@ -314,7 +314,7 @@ public partial class ComboBlock : UserControl
     [Category("Data")]
     [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public ObjectCollection Items => cmbList.Items;
+    public ObjectCollection Items => _cmbList.Items;
 
     /// <summary>
     /// gets or sets the <see cref="ComboBox"/> <see cref="AutoCompleteSource"/> property
@@ -325,7 +325,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.AutoCompleteSource;
+            return _cmbList.AutoCompleteSource;
         }
         set
         {
@@ -334,7 +334,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.AutoCompleteSource = value;
+            _cmbList.AutoCompleteSource = value;
         }
     }
 
@@ -347,7 +347,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.AutoCompleteMode;
+            return _cmbList.AutoCompleteMode;
         }
         set
         {
@@ -356,7 +356,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.AutoCompleteMode = value;
+            _cmbList.AutoCompleteMode = value;
         }
     }
 
@@ -369,7 +369,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.SelectedItem;
+            return _cmbList.SelectedItem;
         }
         set
         {
@@ -378,7 +378,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.SelectedItem = value;
+            _cmbList.SelectedItem = value;
         }
     }
 
@@ -391,7 +391,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.SelectedIndex;
+            return _cmbList.SelectedIndex;
         }
         set
         {
@@ -400,7 +400,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.SelectedIndex = value;
+            _cmbList.SelectedIndex = value;
         }
     }
 
@@ -413,7 +413,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.DisplayMember;
+            return _cmbList.DisplayMember;
         }
         set
         {
@@ -422,7 +422,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.DisplayMember = value;
+            _cmbList.DisplayMember = value;
         }
     }
 
@@ -435,7 +435,7 @@ public partial class ComboBlock : UserControl
     {
         get
         {
-            return cmbList.ValueMember;
+            return _cmbList.ValueMember;
         }
         set
         {
@@ -444,7 +444,7 @@ public partial class ComboBlock : UserControl
                 return;
             }
 
-            cmbList.ValueMember = value;
+            _cmbList.ValueMember = value;
         }
     }
 
@@ -584,7 +584,7 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected virtual void OnSelectedIndexChanged(object sender, EventArgs e)
     {
-        if (sender is not null && sender is ComboBox comboBox && comboBox.Name.Equals(cmbList.Name))
+        if (sender is not null && sender is ComboBox comboBox && comboBox.Name.Equals(_cmbList.Name))
         {
             EventHandler handler = (EventHandler)Events[s_selectedIndexChanged];
             handler?.Invoke(comboBox, e);
@@ -601,7 +601,7 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected void OnIconClick(object sender, EventArgs e)
     {
-        if (sender is not null && sender is Button button && button.Name.Equals(btnIcon.Name))
+        if (sender is not null && sender is Button button && button.Name.Equals(_btnIcon.Name))
         {
             RefreshStyle();
         }
@@ -615,7 +615,7 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected void OnSurfaceClick(object sender, EventArgs e)
     {
-        if (sender is not null && sender is Label label && label.Name.Equals(lblText.Name))
+        if (sender is not null && sender is Label label && label.Name.Equals(_lblText.Name))
         {
             OnClick(e);
             RefreshStyle();
@@ -630,7 +630,7 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected void OnSurfaceEnter(object sender, EventArgs e)
     {
-        if (sender is not null && sender is Label label && label.Name.Equals(lblText.Name))
+        if (sender is not null && sender is Label label && label.Name.Equals(_lblText.Name))
         {
             OnMouseEnter(e);
         }
@@ -644,7 +644,7 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected void OnSurfaceLeave(object sender, EventArgs e)
     {
-        if (sender is not null && sender is Label label && label.Name.Equals(lblText.Name))
+        if (sender is not null && sender is Label label && label.Name.Equals(_lblText.Name))
         {
             OnMouseLeave(e);
         }
@@ -658,7 +658,7 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     protected void OnTextChanged(object sender, EventArgs e)
     {
-        if (sender is not null && sender is ComboBox comboBox && comboBox.Name.Equals(cmbList.Name))
+        if (sender is not null && sender is ComboBox comboBox && comboBox.Name.Equals(_cmbList.Name))
         {
             RefreshText();
         }
@@ -680,8 +680,8 @@ public partial class ComboBlock : UserControl
     /// </summary>
     private void RefreshStyle()
     {
-        cmbList.Select();
-        cmbList.DroppedDown = true;
+        _cmbList.Select();
+        _cmbList.DroppedDown = true;
     }
 
     /// <summary>
@@ -690,6 +690,6 @@ public partial class ComboBlock : UserControl
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void RefreshText()
     {
-        lblText.Text = cmbList.Text;
+        _lblText.Text = _cmbList.Text;
     }
 }

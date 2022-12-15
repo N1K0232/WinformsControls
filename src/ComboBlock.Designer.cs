@@ -5,38 +5,39 @@ namespace WinformsControls;
 
 public partial class ComboBlock
 {
-    private static readonly Size defaultSize = new Size(200, 30);
-    private static readonly Font defaultFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+    private static readonly Size s_defaultSize = new Size(200, 30);
+    private static readonly Font s_defaultFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
 
-    private ComboBox cmbList;
-    private Label lblText;
-    private Button btnIcon;
+    
+    private ComboBox _cmbList = null;
+    private Label _lblText = null;
+    private Button _btnIcon = null;
 
-    private IContainer components = null;
+    private IContainer _components = null;
 
 
     protected override void Dispose(bool disposing)
     {
         if(disposing)
         {
-            if(cmbList != null)
+            if(_cmbList != null)
             {
-                cmbList.Dispose();
+                _cmbList.Dispose();
             }
 
-            if(lblText != null)
+            if(_lblText != null)
             {
-                lblText.Dispose();
+                _lblText.Dispose();
             }
 
-            if(btnIcon != null)
+            if(_btnIcon != null)
             {
-                btnIcon.Dispose();
+                _btnIcon.Dispose();
             }
 
-            if(components != null)
+            if(_components != null)
             {
-                components.Dispose();
+                _components.Dispose();
             }
         }
 
@@ -48,10 +49,10 @@ public partial class ComboBlock
     /// </summary>
     protected internal virtual void Initialize()
     {
-        components = new Container();
-        cmbList = new ComboBox();
-        lblText = new Label();
-        btnIcon = new Button();
+        _components = new Container();
+        _cmbList = new ComboBox();
+        _lblText = new Label();
+        _btnIcon = new Button();
 
         SuspendLayout();
 
@@ -63,39 +64,39 @@ public partial class ComboBlock
 
         int borderSize = BorderSize;
 
-        cmbList.BackColor = listBackColor;
-        cmbList.ForeColor = listTextColor;
-        cmbList.Font = defaultFont;
-        cmbList.DropDownStyle = ComboBoxStyle.DropDownList;
-        cmbList.SelectedIndexChanged += new EventHandler(OnSelectedIndexChanged);
-        cmbList.TextChanged += new EventHandler(OnTextChanged);
+        _cmbList.BackColor = listBackColor;
+        _cmbList.ForeColor = listTextColor;
+        _cmbList.Font = s_defaultFont;
+        _cmbList.DropDownStyle = ComboBoxStyle.DropDownList;
+        _cmbList.SelectedIndexChanged += new EventHandler(OnSelectedIndexChanged);
+        _cmbList.TextChanged += new EventHandler(OnTextChanged);
 
-        btnIcon.Dock = DockStyle.Right;
-        btnIcon.FlatStyle = FlatStyle.Flat;
-        btnIcon.FlatAppearance.BorderSize = 0;
-        btnIcon.BackColor = backColor;
-        btnIcon.Size = new Size(30, 30);
-        btnIcon.Cursor = Cursors.Hand;
-        btnIcon.Click += new EventHandler(OnIconClick);
-        btnIcon.Paint += new PaintEventHandler(OnIconPaint);
+        _btnIcon.Dock = DockStyle.Right;
+        _btnIcon.FlatStyle = FlatStyle.Flat;
+        _btnIcon.FlatAppearance.BorderSize = 0;
+        _btnIcon.BackColor = backColor;
+        _btnIcon.Size = new Size(30, 30);
+        _btnIcon.Cursor = Cursors.Hand;
+        _btnIcon.Click += new EventHandler(OnIconClick);
+        _btnIcon.Paint += new PaintEventHandler(OnIconPaint);
 
-        lblText.Dock = DockStyle.Fill;
-        lblText.AutoSize = false;
-        lblText.BackColor = backColor;
-        lblText.TextAlign = ContentAlignment.MiddleLeft;
-        lblText.Padding = new Padding(8, 0, 0, 0);
-        lblText.Font = defaultFont;
-        lblText.Click += new EventHandler(OnSurfaceClick);
-        lblText.MouseEnter += new EventHandler(OnSurfaceEnter);
-        lblText.MouseLeave += new EventHandler(OnSurfaceLeave);
+        _lblText.Dock = DockStyle.Fill;
+        _lblText.AutoSize = false;
+        _lblText.BackColor = backColor;
+        _lblText.TextAlign = ContentAlignment.MiddleLeft;
+        _lblText.Padding = new Padding(8, 0, 0, 0);
+        _lblText.Font = s_defaultFont;
+        _lblText.Click += new EventHandler(OnSurfaceClick);
+        _lblText.MouseEnter += new EventHandler(OnSurfaceEnter);
+        _lblText.MouseLeave += new EventHandler(OnSurfaceLeave);
 
-        Controls.Add(lblText);
-        Controls.Add(btnIcon);
-        Controls.Add(cmbList);
-        Font = defaultFont;
+        Controls.Add(_lblText);
+        Controls.Add(_btnIcon);
+        Controls.Add(_cmbList);
+        Font = s_defaultFont;
         ForeColor = Color.DimGray;
-        MinimumSize = defaultSize;
-        Size = defaultSize;
+        MinimumSize = s_defaultSize;
+        Size = s_defaultSize;
         Padding = new Padding(borderSize);
 
         base.BackColor = borderColor;
@@ -112,7 +113,7 @@ public partial class ComboBlock
     /// <param name="e">the event data</param>
     private void OnIconPaint(object sender, PaintEventArgs e)
     {
-        if (sender is not null && sender is Button button && button.Name.Equals(btnIcon.Name))
+        if (sender is not null && sender is Button button && button.Name.Equals(_btnIcon.Name))
         {
 
             Color iconColor = IconColor;
@@ -120,8 +121,8 @@ public partial class ComboBlock
             int iconWidth = 14;
             int iconHeight = 6;
 
-            int x = (btnIcon.Width - iconWidth) / 2;
-            int y = (btnIcon.Height - iconHeight) / 2;
+            int x = (_btnIcon.Width - iconWidth) / 2;
+            int y = (_btnIcon.Height - iconHeight) / 2;
 
             var rectIcon = new Rectangle(x, y, iconWidth, iconHeight);
 
@@ -143,11 +144,11 @@ public partial class ComboBlock
     /// </summary>
     private void AdjustComboBoxDimensions()
     {
-        int x = Width - Padding.Right - cmbList.Width;
-        int y = lblText.Bottom - cmbList.Height;
+        int x = Width - Padding.Right - _cmbList.Width;
+        int y = _lblText.Bottom - _cmbList.Height;
 
         var updatedLocation = new Point(x, y);
-        cmbList.Width = lblText.Width;
-        cmbList.Location = updatedLocation;
+        _cmbList.Width = _lblText.Width;
+        _cmbList.Location = updatedLocation;
     }
 }
