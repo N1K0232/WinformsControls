@@ -225,6 +225,29 @@ public partial class ButtonWoc : Button
         }
     }
 
+    public override DialogResult DialogResult
+    {
+        get
+        {
+            return base.DialogResult;
+        }
+        set
+        {
+            if (value == base.DialogResult)
+            {
+                return;
+            }
+
+            base.DialogResult = value;
+        }
+    }
+
+    protected override CreateParams CreateParams => base.CreateParams;
+
+    /// <summary>
+    /// returns <see langword="true"/> if the mouse is in the control area otherwise false
+    /// </summary>
+    private bool Hovering => _hovering;
 
     /// <summary>
     /// occurs when the <see cref="BorderColor"/> property changes its value
@@ -352,6 +375,10 @@ public partial class ButtonWoc : Button
         handler?.Invoke(this, e);
     }
 
+    /// <summary>
+    /// redraws the control
+    /// </summary>
+    /// <param name="pevent">the event data</param>
     protected override void OnPaint(PaintEventArgs pevent)
     {
         base.OnPaint(pevent);
@@ -361,8 +388,9 @@ public partial class ButtonWoc : Button
 
         int width = Width;
         int height = Height;
+        bool hovering = Hovering;
 
-        Color borderColor = _hovering ? HoverBorderColor : BorderColor;
+        Color borderColor = hovering ? HoverBorderColor : BorderColor;
         Brush brush = new SolidBrush(borderColor);
 
         g.FillEllipse(brush, 0, 0, height, height);
@@ -371,7 +399,7 @@ public partial class ButtonWoc : Button
 
         brush.Dispose();
 
-        Color buttonColor = _hovering ? HoverButtonColor : ButtonColor;
+        Color buttonColor = hovering ? HoverButtonColor : ButtonColor;
         brush = new SolidBrush(buttonColor);
 
         g.FillEllipse(brush, BorderThicknessByTwo, BorderThicknessByTwo, height - BorderThickness,
@@ -383,7 +411,7 @@ public partial class ButtonWoc : Button
 
         brush.Dispose();
 
-        Color textColor = _hovering ? HoverTextColor : TextColor;
+        Color textColor = hovering ? HoverTextColor : TextColor;
         brush = new SolidBrush(textColor);
 
         string text = Text;
@@ -398,7 +426,10 @@ public partial class ButtonWoc : Button
         brush.Dispose();
     }
 
-
+    /// <summary>
+    /// creates the <see cref="AccessibleObject"/> for this control
+    /// </summary>
+    /// <returns></returns>
     protected override AccessibleObject CreateAccessibilityInstance()
     {
         return new ButtonWocAccessibleObject(this);
@@ -426,6 +457,9 @@ public partial class ButtonWoc : Button
         Invalidate();
     }
 
+    /// <summary>
+    /// initializes the control
+    /// </summary>
     protected internal virtual void Initialize()
     {
         FlatAppearance.BorderColor = Color.White;
