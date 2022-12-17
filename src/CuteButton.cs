@@ -10,6 +10,10 @@ namespace WinformsControls;
 [ToolboxItemFilter("WinformsControls")]
 public partial class CuteButton : Button
 {
+    //this control doesn't extends ButtonBase class otherwise I will get
+    //a runtime error because the default painter doesn't know anything about this control
+    //so to avoid this kind of error I will extend the Button class
+
     private static readonly object s_firstColorChanged = new();
     private static readonly object s_secondColorChanged = new();
     private static readonly object s_borderColorChanged = new();
