@@ -111,7 +111,7 @@ public partial class ComboBlock
     /// </summary>
     /// <param name="sender">the object that invoked the event</param>
     /// <param name="e">the event data</param>
-    private void OnIconPaint(object sender, PaintEventArgs e)
+    protected void OnIconPaint(object sender, PaintEventArgs e)
     {
         if (sender is not null && sender is Button button && button.Name.Equals(_btnIcon.Name))
         {
