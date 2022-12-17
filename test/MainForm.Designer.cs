@@ -32,6 +32,7 @@ public partial class MainForm : Form
             this.clock1 = new WinformsControls.Clock();
             this.circularPictureBox1 = new WinformsControls.CircularPictureBox();
             this.comboBlock1 = new WinformsControls.ComboBlock();
+            this.cuteRoundButton1 = new WinformsControls.CuteRoundButton();
             ((System.ComponentModel.ISupportInitialize)(this.circularPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -175,12 +176,36 @@ public partial class MainForm : Form
             this.comboBlock1.TabIndex = 9;
             this.comboBlock1.ValueMember = "";
             // 
+            // cuteRoundButton1
+            // 
+            this.cuteRoundButton1.Angle = 10F;
+            this.cuteRoundButton1.BackColor = System.Drawing.Color.White;
+            this.cuteRoundButton1.BorderColor = System.Drawing.Color.White;
+            this.cuteRoundButton1.BorderFocusColor = System.Drawing.Color.Red;
+            this.cuteRoundButton1.BorderRadius = 40;
+            this.cuteRoundButton1.BorderSize = 0;
+            this.cuteRoundButton1.FirstColor = System.Drawing.Color.Red;
+            this.cuteRoundButton1.FirstColorTransparency = 80;
+            this.cuteRoundButton1.FlatAppearance.BorderSize = 0;
+            this.cuteRoundButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cuteRoundButton1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cuteRoundButton1.ForeColor = System.Drawing.Color.Black;
+            this.cuteRoundButton1.Location = new System.Drawing.Point(154, 311);
+            this.cuteRoundButton1.Name = "cuteRoundButton1";
+            this.cuteRoundButton1.SecondColor = System.Drawing.Color.RoyalBlue;
+            this.cuteRoundButton1.SecondColorTransparency = 80;
+            this.cuteRoundButton1.Size = new System.Drawing.Size(188, 50);
+            this.cuteRoundButton1.TabIndex = 10;
+            this.cuteRoundButton1.Text = "cuteRoundButton1";
+            this.cuteRoundButton1.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(993, 620);
+            this.Controls.Add(this.cuteRoundButton1);
             this.Controls.Add(this.comboBlock1);
             this.Controls.Add(this.circularPictureBox1);
             this.Controls.Add(this.clock1);
@@ -205,4 +230,5 @@ public partial class MainForm : Form
     private Clock clock1;
     private CircularPictureBox circularPictureBox1;
     private ComboBlock comboBlock1;
+    private CuteRoundButton cuteRoundButton1;
 }
