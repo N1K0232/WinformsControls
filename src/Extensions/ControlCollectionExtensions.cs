@@ -27,13 +27,26 @@ public static class ControlCollectionExtensions
     /// <param name="items">the list of items</param>
     public static void RemoveRange(this ControlCollection controls, IEnumerable<Control> items)
     {
-        foreach (Control item in controls)
+        foreach (Control item in items)
         {
             controls.Remove(item);
             if (!item.IsDisposed)
             {
                 item.Dispose();
             }
+        }
+    }
+
+    /// <summary>
+    /// adds a collection of controls passed by parameters
+    /// </summary>
+    /// <param name="controls">the collection</param>
+    /// <param name="items">the list of items</param>
+    public static void AddRange(this ControlCollection controls, params Control[] items)
+    {
+        foreach (Control item in items)
+        {
+            controls.Add(item);
         }
     }
 }
