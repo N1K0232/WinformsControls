@@ -16,10 +16,13 @@ public partial class CuteButton : Button
 
     private static readonly object s_firstColorChanged = new();
     private static readonly object s_secondColorChanged = new();
+
     private static readonly object s_borderColorChanged = new();
     private static readonly object s_borderFocusColorChanged = new();
+
     private static readonly object s_firstColorTransparencyChanged = new();
     private static readonly object s_secondColorTransparencyChanged = new();
+
     private static readonly object s_borderSizeChanged = new();
     private static readonly object s_angleChanged = new();
 
@@ -34,7 +37,6 @@ public partial class CuteButton : Button
     private int _secondColorTransparency = 80;
 
     private int _borderSize = 0;
-
     private float _angle = 10F;
 
     private bool _focused = false;
@@ -696,6 +698,7 @@ public partial class CuteButton : Button
     /// when the <see cref="FirstColor"/> property or the <see cref="SecondColor"/> property value
     /// changes this method updates the <see cref="Control.ForeColor"/> property
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void ChangeTextColor()
     {
         float firstColorBrightness = FirstColor.GetBrightness();

@@ -24,7 +24,7 @@ public partial class RoundButton : Button
     private Color _borderColor = Color.PaleVioletRed;
     private Color _borderFocusColor = Color.Red;
 
-    private bool _focused = false;
+    internal bool _focused = false;
 
     /// <summary>
     /// creates a new instance of the <see cref="RoundButton"/> control
@@ -162,15 +162,6 @@ public partial class RoundButton : Button
 
             _borderFocusColor = value;
             OnBorderFocusColorChanged(EventArgs.Empty);
-        }
-    }
-
-    public override bool Focused
-    {
-        get
-        {
-            bool focused = base.Focused;
-            return focused & _focused;
         }
     }
 
@@ -444,7 +435,7 @@ public partial class RoundButton : Button
     /// initializes the base properties of the control
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    private void Initialize()
+    protected internal virtual void Initialize()
     {
         Size = new Size(150, 40);
         Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -455,8 +446,8 @@ public partial class RoundButton : Button
         BackColor = Color.RoyalBlue;
         ForeColor = Color.White;
 
-        Enter += new EventHandler(EnterArea);
-        Leave += new EventHandler(LeaveArea);
+        Enter += new EventHandler(OnEnter);
+        Leave += new EventHandler(OnLeave);
     }
 
     /// <summary>
@@ -465,7 +456,7 @@ public partial class RoundButton : Button
     /// <param name="sender"></param>
     /// <param name="e"></param>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    private void EnterArea(object sender, EventArgs e)
+    protected virtual void OnEnter(object sender, EventArgs e)
     {
         _focused = true;
         Invalidate();
@@ -477,7 +468,7 @@ public partial class RoundButton : Button
     /// <param name="sender"></param>
     /// <param name="e"></param>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    private void LeaveArea(object sender, EventArgs e)
+    protected virtual void OnLeave(object sender, EventArgs e)
     {
         _focused = false;
         Invalidate();
