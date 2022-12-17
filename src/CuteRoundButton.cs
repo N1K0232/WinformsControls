@@ -4,7 +4,8 @@ using System.Drawing.Drawing2D;
 namespace WinformsControls;
 
 /// <summary>
-/// 
+/// defines a <see cref="CuteButton"/> control but with rounded corners
+/// as in <see cref="RoundButton"/> control
 /// </summary>
 public partial class CuteRoundButton : RoundButton
 {
@@ -477,8 +478,5 @@ public partial class CuteRoundButton : RoundButton
         BorderColor = Color.White;
         BackColor = Color.White;
         ForeColor = Color.Black;
-
-        Enter += new EventHandler(OnEnter);
-        Leave += new EventHandler(OnLeave);
     }
 }
