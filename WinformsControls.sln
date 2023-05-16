@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsControls", "src\WinformsControls.csproj", "{4C73FC98-1A7D-469F-BDC0-F46702CE727E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsControls", "src\WinformsControls\WinformsControls.csproj", "{4C73FC98-1A7D-469F-BDC0-F46702CE727E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsTest", "test\WinformsTest.csproj", "{F94E4260-E1DD-442B-84C8-05B7D7ACCE50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformsTest", "test\WinformsTest\WinformsTest.csproj", "{F94E4260-E1DD-442B-84C8-05B7D7ACCE50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
