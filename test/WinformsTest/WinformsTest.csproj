@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\WinformsControls.csproj" />
+    <ProjectReference Include="..\..\src\WinformsControls\WinformsControls.csproj" />
   </ItemGroup>
 
 </Project>
