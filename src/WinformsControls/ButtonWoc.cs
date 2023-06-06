@@ -263,6 +263,36 @@ public partial class ButtonWoc : Button
         }
     }
 
+    public override bool Focused
+    {
+        get
+        {
+            bool focused = base.Focused;
+            bool currentFocused = FocusedInternal;
+
+            return focused && currentFocused;
+        }
+    }
+
+    private bool FocusedInternal
+    {
+        get
+        {
+            return _focused;
+        }
+        set
+        {
+            bool oldFocused = FocusedInternal;
+            bool focused = value;
+
+            if (focused != oldFocused)
+            {
+                _focused = focused;
+                //Invalidate();
+            }
+        }
+    }
+
     /// <summary>
     /// occurs when the <see cref="BorderColor"/> property changes its value
     /// </summary>
@@ -456,6 +486,19 @@ public partial class ButtonWoc : Button
     private void OnMouseLeave(object sender, EventArgs e)
     {
         Hovering = false;
+    }
+
+    private void OnEnterFocus(object sender, EventArgs e)
+    {
+        if (CanFocus)
+        {
+            FocusedInternal = true;
+        }
+    }
+
+    private void OnLeaveFocus(object sender, EventArgs e)
+    {
+        FocusedInternal = false;
     }
 
     protected internal virtual void Initialize()

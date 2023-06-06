@@ -322,8 +322,7 @@ public partial class RoundButton : Button
 
         if (borderRadius > 2)
         {
-            borderPen = new Pen(borderColor, 2);
-            borderPen.Alignment = PenAlignment.Inset;
+            borderPen = new Pen(borderColor, 2) { Alignment = PenAlignment.Inset };
 
             if (borderSize >= 1)
             {
@@ -334,8 +333,7 @@ public partial class RoundButton : Button
         {
             if (borderSize >= 1)
             {
-                borderPen = new Pen(borderColor, borderSize);
-                borderPen.Alignment = PenAlignment.Inset;
+                borderPen = new Pen(borderColor, borderSize) { Alignment = PenAlignment.Inset };
                 graphics.DrawRectangle(borderPen, 0, 0, width - 1, height - 1);
             }
         }
@@ -353,25 +351,24 @@ public partial class RoundButton : Button
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void DrawSurface(Graphics graphics, int width, int height)
     {
-        var surfaceRectangle = new RectangleF(0, 0, width, height);
-        int borderRadius = BorderRadius;
-
         Control parent = Parent;
+        var surfacePen = new Pen(parent.BackColor, 2);
+        var surfaceRectangle = new RectangleF(0, 0, width, height);
 
+        int borderRadius = BorderRadius;
         GraphicsPath surfacePath = GetFigurePath(surfaceRectangle);
-        Pen penSurface = new(parent.BackColor, 2);
 
         if (borderRadius > 2)
         {
             Region = new Region(surfacePath);
-            graphics.DrawPath(penSurface, surfacePath);
+            graphics.DrawPath(surfacePen, surfacePath);
         }
         else
         {
             Region = new Region(surfaceRectangle);
         }
 
-        penSurface.Dispose();
+        surfacePen.Dispose();
         surfacePath.Dispose();
     }
 
@@ -388,28 +385,15 @@ public partial class RoundButton : Button
         container.BackColorChanged += new EventHandler(Container_BackColorChanged);
     }
 
-    /// <summary>
-    /// Raises the <see cref="Control.HandleDestroyed"/> event
-    /// </summary>
-    /// <param name="e"></param>
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected override void OnHandleDestroyed(EventArgs e)
-    {
-        base.OnHandleDestroyed(e);
-
-        Control container = Parent;
-        container.BackColorChanged -= new EventHandler(Container_BackColorChanged);
-    }
-
     protected override void OnMouseEnter(EventArgs e)
     {
-        Cursor = Cursors.Hand;
+        ChangeCursor(Cursors.Hand);
         base.OnMouseEnter(e);
     }
 
     protected override void OnMouseLeave(EventArgs e)
     {
-        Cursor = Cursors.Default;
+        ChangeCursor(Cursors.Default);
         base.OnMouseLeave(e);
     }
 
@@ -421,19 +405,24 @@ public partial class RoundButton : Button
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     private void Container_BackColorChanged(object sender, EventArgs e)
     {
-        InvalidateIfDesignMode();
+        InvalidateWhenDesignMode();
     }
 
     /// <summary>
     /// redraws the control if <see cref="Component.DesignMode"/> value is true
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    private void InvalidateIfDesignMode()
+    private void InvalidateWhenDesignMode()
     {
         if (DesignMode)
         {
             Invalidate();
         }
+    }
+
+    private void ChangeCursor(Cursor cursor)
+    {
+        Cursor = cursor;
     }
 
     /// <summary>

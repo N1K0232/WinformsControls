@@ -8,6 +8,12 @@ public partial class TextBlock : TextBox
 
     public TextBlock()
     {
+        SetStyle(ControlStyles.UserPaint, true);
+        SetStyle(ControlStyles.ResizeRedraw, true);
+        SetStyle(ControlStyles.Selectable, true);
+
+        SetStyle(ControlStyles.ContainerControl, false);
+        SetStyle(ControlStyles.Opaque, false);
     }
 
     public virtual Color BorderColor
@@ -46,13 +52,13 @@ public partial class TextBlock : TextBox
         EventHandler handler = (EventHandler)Events[s_borderColorChanged];
         handler?.Invoke(this, e);
 
-        RedrawWindow();
+        ExecuteRedraw();
     }
 
     protected override void OnSizeChanged(EventArgs e)
     {
         base.OnSizeChanged(e);
-        RedrawWindow();
+        ExecuteRedraw();
     }
 
     protected override void WndProc(ref Message m)
@@ -86,7 +92,7 @@ public partial class TextBlock : TextBox
         return new TextBlockAccessibleObject(this);
     }
 
-    private void RedrawWindow()
+    private void ExecuteRedraw()
     {
         nint handle = Handle;
         uint frame = RDW_FRAME;
@@ -96,6 +102,7 @@ public partial class TextBlock : TextBox
         nint lprc = nint.Zero;
         nint hrgn = nint.Zero;
 
-        RedrawWindow(handle, lprc, hrgn, frame | updateNow | invalidate);
+        uint flags = frame | updateNow | invalidate;
+        RedrawWindow(handle, lprc, hrgn, flags);
     }
 }

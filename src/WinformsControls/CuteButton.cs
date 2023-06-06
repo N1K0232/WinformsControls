@@ -598,10 +598,10 @@ public partial class CuteButton : Button
     /// <param name="e"></param>
     protected override void OnHandleCreated(EventArgs e)
     {
-        base.OnHandleCreated(e);
-
         Control container = Parent;
         container.BackColorChanged += new EventHandler(Container_BackColorChanged);
+
+        base.OnHandleCreated(e);
     }
 
     /// <summary>
@@ -610,10 +610,10 @@ public partial class CuteButton : Button
     /// <param name="e"></param>
     protected override void OnHandleDestroyed(EventArgs e)
     {
-        base.OnHandleDestroyed(e);
-
         Control container = Parent;
         container.BackColorChanged -= Container_BackColorChanged;
+
+        base.OnHandleDestroyed(e);
     }
 
     /// <summary>

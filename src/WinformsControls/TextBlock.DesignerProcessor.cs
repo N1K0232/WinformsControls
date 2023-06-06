@@ -9,12 +9,13 @@ public partial class TextBlock
     private const uint RDW_IUPDATENOW = 0x100;
     private const uint RDW_FRAME = 0x400;
 
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetWindowDC(IntPtr hWnd);
+    [LibraryImport("user32.dll")]
+    private static partial IntPtr GetWindowDC(IntPtr hWnd);
 
-    [DllImport("user32.dll")]
-    private static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
+    [LibraryImport("user32.dll")]
+    private static partial IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
-    [DllImport("user32.dll")]
-    private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);
 }
