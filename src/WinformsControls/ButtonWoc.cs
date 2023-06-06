@@ -28,6 +28,11 @@ public partial class ButtonWoc : Button
     private Color _hoverTextColor = Color.Red;
 
     private bool _hovering = false;
+    private bool _focused = false;
+
+    private Brush _borderBrush;
+    private Brush _buttonBrush;
+    private Brush _textBrush;
 
     /// <summary>
     /// creates a new instance of the <see cref="ButtonWoc"/> control
@@ -58,20 +63,21 @@ public partial class ButtonWoc : Button
         }
         set
         {
-            if (value.IsEmpty)
+            Color oldBorderColor = BorderColor;
+            Color borderColor = value;
+
+            if (borderColor.IsEmpty)
             {
                 throw new ArgumentException("Invalid color", nameof(BorderColor));
             }
 
-            if (value == BorderColor)
+            if (borderColor != oldBorderColor)
             {
-                return;
+                _borderColor = borderColor;
+
+                Invalidate();
+                OnBorderColorChanged(EventArgs.Empty);
             }
-
-            _borderColor = value;
-
-            Invalidate();
-            OnBorderColorChanged(EventArgs.Empty);
         }
     }
 
@@ -88,20 +94,21 @@ public partial class ButtonWoc : Button
         }
         set
         {
-            if (value.IsEmpty)
+            Color oldButtonColor = ButtonColor;
+            Color buttonColor = value;
+
+            if (buttonColor.IsEmpty)
             {
                 throw new ArgumentException("Invalid color", nameof(ButtonColor));
             }
 
-            if (value == ButtonColor)
+            if (buttonColor != oldButtonColor)
             {
-                return;
+                _buttonColor = buttonColor;
+
+                Invalidate();
+                OnButtonColorChanged(EventArgs.Empty);
             }
-
-            _buttonColor = value;
-
-            Invalidate();
-            OnButtonColorChanged(EventArgs.Empty);
         }
     }
 
@@ -118,20 +125,21 @@ public partial class ButtonWoc : Button
         }
         set
         {
-            if (value.IsEmpty)
+            Color oldTextColor = TextColor;
+            Color textColor = value;
+
+            if (textColor.IsEmpty)
             {
                 throw new ArgumentException("invalid color", nameof(TextColor));
             }
 
-            if (value == TextColor)
+            if (textColor != oldTextColor)
             {
-                return;
+                _textColor = textColor;
+
+                Invalidate();
+                OnTextColorChanged(EventArgs.Empty);
             }
-
-            _textColor = value;
-
-            Invalidate();
-            OnTextColorChanged(EventArgs.Empty);
         }
     }
 
@@ -148,20 +156,21 @@ public partial class ButtonWoc : Button
         }
         set
         {
-            if (value.IsEmpty)
+            Color oldHoverBorderColor = HoverBorderColor;
+            Color hoverBorderColor = value;
+
+            if (hoverBorderColor.IsEmpty)
             {
                 throw new ArgumentException("invalid color", nameof(HoverBorderColor));
             }
 
-            if (value == HoverBorderColor)
+            if (hoverBorderColor != oldHoverBorderColor)
             {
-                return;
+                _hoverBorderColor = hoverBorderColor;
+
+                Invalidate();
+                OnHoverBorderColorChanged(EventArgs.Empty);
             }
-
-            _hoverBorderColor = value;
-
-            Invalidate();
-            OnHoverBorderColorChanged(EventArgs.Empty);
         }
     }
 
@@ -178,20 +187,21 @@ public partial class ButtonWoc : Button
         }
         set
         {
-            if (value.IsEmpty)
+            Color oldHoverButtonColor = HoverButtonColor;
+            Color hoverButtonColor = value;
+
+            if (hoverButtonColor.IsEmpty)
             {
                 throw new ArgumentException("invalid color", nameof(HoverButtonColor));
             }
 
-            if (value == HoverButtonColor)
+            if (hoverButtonColor != oldHoverButtonColor)
             {
-                return;
+                _hoverButtonColor = value;
+
+                Invalidate();
+                OnHoverButtonColorChanged(EventArgs.Empty);
             }
-
-            _hoverButtonColor = value;
-
-            Invalidate();
-            OnHoverButtonColorChanged(EventArgs.Empty);
         }
     }
 
@@ -208,23 +218,50 @@ public partial class ButtonWoc : Button
         }
         set
         {
-            if (value.IsEmpty)
+            Color oldHoverTextColor = HoverTextColor;
+            Color hoverTextColor = value;
+
+            if (hoverTextColor.IsEmpty)
             {
                 throw new ArgumentException("invalid color", nameof(HoverTextColor));
             }
 
-            if (value == HoverTextColor)
+            if (hoverTextColor != oldHoverTextColor)
             {
-                return;
+                _hoverTextColor = hoverTextColor;
+
+                Invalidate();
+                OnHoverTextColorChanged(EventArgs.Empty);
             }
-
-            _hoverTextColor = value;
-
-            Invalidate();
-            OnHoverTextColorChanged(EventArgs.Empty);
         }
     }
 
+    /// <summary>
+    /// gets the state of the control
+    /// </summary>
+    public bool MouseHovering => Hovering;
+
+    /// <summary>
+    /// gets or sets the value of the hovering property when the mouse enters the control area
+    /// </summary>
+    private bool Hovering
+    {
+        get
+        {
+            return _hovering;
+        }
+        set
+        {
+            bool oldHovering = Hovering;
+            bool hovering = value;
+
+            if (hovering != oldHovering)
+            {
+                _hovering = hovering;
+                Invalidate();
+            }
+        }
+    }
 
     /// <summary>
     /// occurs when the <see cref="BorderColor"/> property changes its value
@@ -362,29 +399,28 @@ public partial class ButtonWoc : Button
         int width = Width;
         int height = Height;
 
+        int borderThickness = BorderThickness;
+        int borderThicknessByTwo = BorderThicknessByTwo;
+
         Color borderColor = _hovering ? HoverBorderColor : BorderColor;
-        Brush brush = new SolidBrush(borderColor);
+        _borderBrush = new SolidBrush(borderColor);
 
-        g.FillEllipse(brush, 0, 0, height, height);
-        g.FillEllipse(brush, width - height, 0, height, height);
-        g.FillRectangle(brush, height / 2, 0, width - height, height);
-
-        brush.Dispose();
+        g.FillEllipse(_borderBrush, 0, 0, height, height);
+        g.FillEllipse(_borderBrush, width - height, 0, height, height);
+        g.FillRectangle(_borderBrush, height / 2, 0, width - height, height);
 
         Color buttonColor = _hovering ? HoverButtonColor : ButtonColor;
-        brush = new SolidBrush(buttonColor);
+        _buttonBrush = new SolidBrush(buttonColor);
 
-        g.FillEllipse(brush, BorderThicknessByTwo, BorderThicknessByTwo, height - BorderThickness,
-                height - BorderThickness);
-        g.FillEllipse(brush, (width - height) + BorderThicknessByTwo, BorderThicknessByTwo,
-            height - BorderThickness, height - BorderThickness);
-        g.FillRectangle(brush, height / 2 + BorderThicknessByTwo, BorderThicknessByTwo,
-            width - height - BorderThickness, height - BorderThickness);
-
-        brush.Dispose();
+        g.FillEllipse(_buttonBrush, borderThicknessByTwo, borderThicknessByTwo, height - borderThickness,
+                height - borderThickness);
+        g.FillEllipse(_buttonBrush, (width - height) + borderThicknessByTwo, borderThicknessByTwo,
+            height - borderThickness, height - borderThickness);
+        g.FillRectangle(_buttonBrush, height / 2 + borderThicknessByTwo, borderThicknessByTwo,
+            width - height - borderThickness, height - borderThickness);
 
         Color textColor = _hovering ? HoverTextColor : TextColor;
-        brush = new SolidBrush(textColor);
+        _textBrush = new SolidBrush(textColor);
 
         string text = Text;
         Font font = Font;
@@ -393,9 +429,7 @@ public partial class ButtonWoc : Button
         float textWidth = (width - textSize.Width) / 2;
         float textHeight = (height - textSize.Height) / 2;
 
-        g.DrawString(text, font, brush, textWidth, textHeight);
-
-        brush.Dispose();
+        g.DrawString(text, font, _textBrush, textWidth, textHeight);
     }
 
 
@@ -411,8 +445,7 @@ public partial class ButtonWoc : Button
     /// <param name="e"></param>
     private void OnMouseEnter(object sender, EventArgs e)
     {
-        _hovering = true;
-        Invalidate();
+        Hovering = true;
     }
 
     /// <summary>
@@ -422,8 +455,7 @@ public partial class ButtonWoc : Button
     /// <param name="e"></param>
     private void OnMouseLeave(object sender, EventArgs e)
     {
-        _hovering = false;
-        Invalidate();
+        Hovering = false;
     }
 
     protected internal virtual void Initialize()
@@ -441,5 +473,31 @@ public partial class ButtonWoc : Button
 
         MouseEnter += new EventHandler(OnMouseEnter);
         MouseLeave += new EventHandler(OnMouseLeave);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (_borderBrush != null)
+            {
+                _borderBrush.Dispose();
+                _borderBrush = null;
+            }
+
+            if (_buttonBrush != null)
+            {
+                _buttonBrush.Dispose();
+                _buttonBrush = null;
+            }
+
+            if (_textBrush != null)
+            {
+                _textBrush.Dispose();
+                _textBrush = null;
+            }
+        }
+
+        base.Dispose(disposing);
     }
 }
