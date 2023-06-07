@@ -61,8 +61,10 @@ public partial class MainForm : Form
         toggleButton.MinimumSize = new Size(90, 45);
         toggleButton.Name = "toggleButton";
         toggleButton.OffSliderColor = Color.Gray;
+        toggleButton.OffText = "OFF";
         toggleButton.OffToggleColor = Color.Gainsboro;
         toggleButton.OnSliderColor = Color.RoyalBlue;
+        toggleButton.OnText = "ON";
         toggleButton.OnToggleColor = Color.WhiteSmoke;
         toggleButton.Size = new Size(90, 45);
         toggleButton.SolidStyle = true;

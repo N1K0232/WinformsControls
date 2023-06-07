@@ -18,7 +18,16 @@ public partial class ToggleButton : CheckBox
     private Color _onToggleColor = Color.WhiteSmoke;
     private Color _offToggleColor = Color.Gainsboro;
 
+    private string _onText;
+    private string _offText;
+
     private bool _solidStyle = true;
+
+    private Pen _sliderPen;
+
+    private Brush _sliderBrush;
+    private Brush _toggleBrush;
+    private Brush _textBrush;
 
 
     /// <summary>
@@ -32,7 +41,7 @@ public partial class ToggleButton : CheckBox
         SetStyle(ControlStyles.ContainerControl, false);
         SetStyle(ControlStyles.Opaque, false);
 
-        MinimumSize = new Size(90, 45);
+        Initialize();
     }
 
 
@@ -186,39 +195,43 @@ public partial class ToggleButton : CheckBox
         }
     }
 
-    /// <summary>
-    /// gets the left arc of the toggle
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    private Rectangle LeftArc
+    public string OnText
     {
         get
         {
-            int height = Height;
-            int arcSize = height - 1;
+            return _onText;
+        }
+        set
+        {
+            string oldOnText = OnText;
+            string onText = value;
 
-            Rectangle leftArc = new(0, 0, arcSize, arcSize);
-            return leftArc;
+            if (onText != oldOnText)
+            {
+                _onText = onText;
+                Invalidate();
+            }
         }
     }
 
-    /// <summary>
-    /// gets the right arc of the toggle
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
-    private Rectangle RightArc
+    public string OffText
     {
         get
         {
-            int width = Width;
-            int height = Height;
-            int arcSize = height - 1;
+            return _offText;
+        }
+        set
+        {
+            string oldOffText = OffText;
+            string offText = value;
 
-            Rectangle rightArc = new(width - arcSize - 2, 0, arcSize, arcSize);
-            return rightArc;
+            if (offText != oldOffText)
+            {
+                _offText = offText;
+                Invalidate();
+            }
         }
     }
-
 
     /// <summary>
     /// occurs when the <see cref="OnSliderColor"/> or <see cref="OffSliderColor"/> changes its value
@@ -318,6 +331,7 @@ public partial class ToggleButton : CheckBox
 
         DrawSlider(graphics, isChecked);
         DrawToggle(graphics, width, height, isChecked);
+        DrawText(graphics, isChecked, width, height);
     }
 
     /// <summary>
@@ -327,37 +341,41 @@ public partial class ToggleButton : CheckBox
     /// <param name="isChecked">the control status</param>
     private void DrawSlider(Graphics graphics, bool isChecked)
     {
-        GraphicsPath path = GetFigurePath();
-        Color backColor = GetSlideColor(isChecked);
-        Brush backColorBrush = new SolidBrush(backColor);
-
         bool solidStyle = SolidStyle;
+        GraphicsPath path = GetFigurePath();
+
+        Color onSliderColor = OnSliderColor;
+        Color offSliderColor = OffSliderColor;
+
+        Color sliderColor = isChecked ? onSliderColor : offSliderColor;
+        _sliderBrush = new SolidBrush(sliderColor);
 
         if (isChecked)
         {
             if (solidStyle)
             {
-                graphics.FillPath(backColorBrush, path);
+                graphics.FillPath(_sliderBrush, path);
             }
             else
             {
-                graphics.DrawPath(new Pen(_onSliderColor), path);
+                _sliderPen = new Pen(onSliderColor);
+                graphics.DrawPath(_sliderPen, path);
             }
         }
         else
         {
             if (solidStyle)
             {
-                graphics.FillPath(backColorBrush, path);
+                graphics.FillPath(_sliderBrush, path);
             }
             else
             {
-                graphics.DrawPath(new Pen(_offSliderColor), path);
+                _sliderPen = new Pen(offSliderColor);
+                graphics.DrawPath(_sliderPen, path);
             }
         }
 
         path.Dispose();
-        backColorBrush.Dispose();
     }
 
     /// <summary>
@@ -369,23 +387,30 @@ public partial class ToggleButton : CheckBox
     /// <param name="isChecked">the control status</param>
     private void DrawToggle(Graphics graphics, int width, int height, bool isChecked)
     {
-        Color toggleColor = GetToggleColor(isChecked);
-        Brush toggleColorBrush = new SolidBrush(toggleColor);
-
         int toggleSize = height - 5;
-        Rectangle rectangle;
+        var toggleRectangle = isChecked ? new Rectangle(width - height + 1, 2, toggleSize, toggleSize) : new Rectangle(2, 2, toggleSize, toggleSize);
 
-        if (isChecked)
-        {
-            rectangle = new Rectangle(width - height + 1, 2, toggleSize, toggleSize);
-        }
-        else
-        {
-            rectangle = new Rectangle(2, 2, toggleSize, toggleSize);
-        }
+        Color toggleColor = isChecked ? OnToggleColor : OffToggleColor;
+        _toggleBrush = new SolidBrush(toggleColor);
 
-        graphics.FillEllipse(toggleColorBrush, rectangle);
-        toggleColorBrush.Dispose();
+        graphics.FillEllipse(_toggleBrush, toggleRectangle);
+    }
+
+    private void DrawText(Graphics graphics, bool isChecked, int width, int height)
+    {
+        string text = isChecked ? OnText : OffText;
+        Font font = Font;
+
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            SizeF textSize = graphics.MeasureString(text, font);
+
+            float textWidth = (width - textSize.Width) / 2;
+            float textHeight = (height - textSize.Height) / 2;
+
+            _textBrush = new SolidBrush(Color.White);
+            graphics.DrawString(text, font, _textBrush, textWidth, textHeight);
+        }
     }
 
     /// <summary>
@@ -394,40 +419,25 @@ public partial class ToggleButton : CheckBox
     /// <returns></returns>
     private GraphicsPath GetFigurePath()
     {
-        Rectangle leftArc = LeftArc;
-        Rectangle rightArc = RightArc;
-
-        GraphicsPath path = new();
-
+        var path = new GraphicsPath();
         path.StartFigure();
+
+        int width = Width;
+        int height = Height;
+        int arcSize = height - 1;
+
+        var leftArc = new Rectangle(0, 0, arcSize, arcSize);
+        var rightArc = new Rectangle(width - arcSize - 2, 0, arcSize, arcSize);
+
         path.AddArc(leftArc, 90, 180);
         path.AddArc(rightArc, 270, 180);
-        path.CloseFigure();
 
+        path.CloseFigure();
         return path;
     }
 
-    /// <summary>
-    /// gets the color of the slide giving its status
-    /// </summary>
-    /// <param name="isChecked"></param>
-    /// <returns></returns>
-    private Color GetSlideColor(bool isChecked)
+    private void Initialize()
     {
-        return isChecked ?
-            _onSliderColor :
-            _offSliderColor;
-    }
-
-    /// <summary>
-    /// gets the color of the toggle giving its status
-    /// </summary>
-    /// <param name="isChecked"></param>
-    /// <returns></returns>
-    private Color GetToggleColor(bool isChecked)
-    {
-        return isChecked ?
-            _onToggleColor :
-            _offToggleColor;
+        MinimumSize = new Size(90, 45);
     }
 }

@@ -28,12 +28,14 @@ public partial class CuteButton : Button
 
     private int _firstColorTransparency = 80;
     private int _secondColorTransparency = 80;
-
     private int _borderSize = 0;
 
     private float _angle = 10F;
-
     private bool _focused = false;
+
+    private Brush _backgroundBrush;
+    private Brush _textBrush;
+    private Pen _borderPen;
 
 
     /// <summary>
@@ -319,7 +321,44 @@ public partial class CuteButton : Button
         }
     }
 
-    protected override CreateParams CreateParams => base.CreateParams;
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            CreateParams cp = base.CreateParams;
+            return cp;
+        }
+    }
+
+    public override bool Focused
+    {
+        get
+        {
+            bool isFocused = base.Focused;
+            bool controlFocused = FocusedInternal;
+
+            return isFocused && controlFocused;
+        }
+    }
+
+    private bool FocusedInternal
+    {
+        get
+        {
+            return _focused;
+        }
+        set
+        {
+            bool oldFocused = FocusedInternal;
+            bool focused = value;
+
+            if (focused != oldFocused)
+            {
+                _focused = value;
+                Invalidate();
+            }
+        }
+    }
 
 
     /// <summary>
@@ -520,15 +559,6 @@ public partial class CuteButton : Button
     }
 
     /// <summary>
-    /// redraws the background of the control
-    /// </summary>
-    /// <param name="pevent"></param>
-    protected override void OnPaintBackground(PaintEventArgs pevent)
-    {
-        base.OnPaintBackground(pevent);
-    }
-
-    /// <summary>
     /// redraws the control
     /// </summary>
     /// <param name="pevent"></param>
@@ -542,15 +572,11 @@ public partial class CuteButton : Button
         graphics.SmoothingMode = SmoothingMode.AntiAlias;
         graphics.Clear(container.BackColor);
 
-        int firstColorTransparency = FirstColorTransparency;
-        int secondColorTransparency = SecondColorTransparency;
-
         int borderSize = BorderSize;
-
         int width = Width;
         int height = Height;
 
-        float angle = Angle;
+        bool focused = FocusedInternal;
 
         string text = Text;
         Font font = Font;
@@ -559,28 +585,28 @@ public partial class CuteButton : Button
         float textWidth = (width - textSize.Width) / 2;
         float textHeight = (height - textSize.Height) / 2;
 
-        Color firstColor = Color.FromArgb(firstColorTransparency, FirstColor);
-        Color secondColor = Color.FromArgb(secondColorTransparency, SecondColor);
-
-        Color borderColor = _focused ? BorderFocusColor : BorderColor;
+        Color borderColor = focused ? BorderFocusColor : BorderColor;
         Color textColor = ForeColor;
 
-        Rectangle rectangle = ClientRectangle;
+        int firstColorTransparency = FirstColorTransparency;
+        int secondColorTransparency = SecondColorTransparency;
+        float angle = Angle;
 
-        Brush backgroundBrush = new LinearGradientBrush(rectangle, firstColor, secondColor, angle);
-        Brush textBrush = new SolidBrush(textColor);
+        Color firstColor = Color.FromArgb(firstColorTransparency, FirstColor);
+        Color secondColor = Color.FromArgb(secondColorTransparency, SecondColor);
+        Rectangle area = ClientRectangle;
+
+        _backgroundBrush = new LinearGradientBrush(area, firstColor, secondColor, angle);
+        _textBrush = new SolidBrush(textColor);
 
         if (borderSize >= 1)
         {
-            using var borderPen = new Pen(borderColor, borderSize);
-            graphics.DrawRectangle(borderPen, rectangle);
+            _borderPen = new Pen(borderColor, borderSize);
+            graphics.DrawRectangle(_borderPen, area);
         }
 
-        graphics.FillRectangle(backgroundBrush, rectangle);
-        graphics.DrawString(text, font, textBrush, textWidth, textHeight);
-
-        backgroundBrush.Dispose();
-        textBrush.Dispose();
+        graphics.FillRectangle(_backgroundBrush, area);
+        graphics.DrawString(text, font, _textBrush, textWidth, textHeight);
     }
 
     /// <summary>
@@ -611,7 +637,7 @@ public partial class CuteButton : Button
     protected override void OnHandleDestroyed(EventArgs e)
     {
         Control container = Parent;
-        container.BackColorChanged -= Container_BackColorChanged;
+        container.BackColorChanged -= new EventHandler(Container_BackColorChanged);
 
         base.OnHandleDestroyed(e);
     }
@@ -622,7 +648,7 @@ public partial class CuteButton : Button
     /// <param name="e"></param>
     protected override void OnMouseEnter(EventArgs e)
     {
-        Cursor = Cursors.Hand;
+        UpdateCursor(Cursors.Hand);
         base.OnMouseEnter(e);
     }
 
@@ -632,7 +658,7 @@ public partial class CuteButton : Button
     /// <param name="e"></param>
     protected override void OnMouseLeave(EventArgs e)
     {
-        Cursor = Cursors.Default;
+        UpdateCursor(Cursors.Default);
         base.OnMouseLeave(e);
     }
 
@@ -659,8 +685,7 @@ public partial class CuteButton : Button
     /// <param name="e"></param>
     private void OnEnter(object sender, EventArgs e)
     {
-        _focused = true;
-        Invalidate();
+        FocusedInternal = true;
     }
 
     /// <summary>
@@ -670,8 +695,7 @@ public partial class CuteButton : Button
     /// <param name="e"></param>
     private void OnLeave(object sender, EventArgs e)
     {
-        _focused = false;
-        Invalidate();
+        FocusedInternal = false;
     }
 
     /// <summary>
@@ -709,5 +733,36 @@ public partial class CuteButton : Button
         }
 
         ForeColor = textColor;
+    }
+
+    private void UpdateCursor(Cursor cursor)
+    {
+        Cursor = cursor;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (_backgroundBrush != null)
+            {
+                _backgroundBrush.Dispose();
+                _backgroundBrush = null;
+            }
+
+            if (_textBrush != null)
+            {
+                _textBrush.Dispose();
+                _textBrush = null;
+            }
+
+            if (_borderPen != null)
+            {
+                _borderPen.Dispose();
+                _borderPen = null;
+            }
+        }
+
+        base.Dispose(disposing);
     }
 }
