@@ -387,8 +387,11 @@ public partial class ToggleButton : CheckBox
     /// <param name="isChecked">the control status</param>
     private void DrawToggle(Graphics graphics, int width, int height, bool isChecked)
     {
+        int toggleX = isChecked ? width - height + 1 : 2;
+        int toggleY = 2;
+
         int toggleSize = height - 5;
-        var toggleRectangle = isChecked ? new Rectangle(width - height + 1, 2, toggleSize, toggleSize) : new Rectangle(2, 2, toggleSize, toggleSize);
+        var toggleRectangle = new Rectangle(toggleX, toggleY, toggleSize, toggleSize);
 
         Color toggleColor = isChecked ? OnToggleColor : OffToggleColor;
         _toggleBrush = new SolidBrush(toggleColor);
@@ -426,8 +429,13 @@ public partial class ToggleButton : CheckBox
         int height = Height;
         int arcSize = height - 1;
 
-        var leftArc = new Rectangle(0, 0, arcSize, arcSize);
-        var rightArc = new Rectangle(width - arcSize - 2, 0, arcSize, arcSize);
+        int leftX = 0;
+        int leftY = 0;
+        int rightX = width - arcSize - 2;
+        int rightY = 0;
+
+        var leftArc = new Rectangle(leftX, leftY, arcSize, arcSize);
+        var rightArc = new Rectangle(rightX, rightY, arcSize, arcSize);
 
         path.AddArc(leftArc, 90, 180);
         path.AddArc(rightArc, 270, 180);
@@ -439,5 +447,37 @@ public partial class ToggleButton : CheckBox
     private void Initialize()
     {
         MinimumSize = new Size(90, 45);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (_sliderPen != null)
+            {
+                _sliderPen.Dispose();
+                _sliderPen = null;
+            }
+
+            if (_sliderBrush != null)
+            {
+                _sliderBrush.Dispose();
+                _sliderBrush = null;
+            }
+
+            if (_toggleBrush != null)
+            {
+                _toggleBrush.Dispose();
+                _toggleBrush = null;
+            }
+
+            if (_textBrush != null)
+            {
+                _textBrush.Dispose();
+                _textBrush = null;
+            }
+        }
+
+        base.Dispose(disposing);
     }
 }
