@@ -71,6 +71,7 @@ public partial class ToggleButton : CheckBox
 
             _onSliderColor = value;
 
+            ChangeTextColor();
             Invalidate();
             OnSlideColorChanged(EventArgs.Empty);
         }
@@ -102,6 +103,7 @@ public partial class ToggleButton : CheckBox
 
             _offSliderColor = value;
 
+            ChangeTextColor();
             Invalidate();
             OnSlideColorChanged(EventArgs.Empty);
         }
@@ -442,6 +444,38 @@ public partial class ToggleButton : CheckBox
 
         path.CloseFigure();
         return path;
+    }
+
+    private void ChangeTextColor()
+    {
+        float onSliderColorBrightness = OnSliderColor.GetBrightness();
+        float offSliderColorBrightness = OffSliderColor.GetBrightness();
+
+        if (onSliderColorBrightness > 0.8F && offSliderColorBrightness > 0.8F)
+        {
+            ForeColor = Color.White;
+        }
+        else
+        {
+            ForeColor = Color.Black;
+        }
+    }
+
+    protected override void OnMouseEnter(EventArgs e)
+    {
+        ChangeCursor(Cursors.Hand);
+        base.OnMouseEnter(e);
+    }
+
+    protected override void OnMouseLeave(EventArgs e)
+    {
+        ChangeCursor(Cursors.Default);
+        base.OnMouseLeave(e);
+    }
+
+    private void ChangeCursor(Cursor cursor)
+    {
+        Cursor = cursor;
     }
 
     private void Initialize()
